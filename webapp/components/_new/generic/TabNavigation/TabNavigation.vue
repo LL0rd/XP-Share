@@ -78,7 +78,7 @@ export default {
     }
 
     &.--active {
-      border-bottom: 2px solid #17b53f;
+      border-bottom: 2px solid #526f98;
     }
     &.--disabled {
       opacity: $opacity-disabled;
@@ -98,7 +98,7 @@ export default {
 
   .ds-tab-nav-item {
     &.ds-tab-nav-item-active {
-      border-bottom: 3px solid #17b53f;
+      border-bottom: 3px solid #526f98;
       &:first-child {
         border-bottom-left-radius: $border-radius-x-large;
       }

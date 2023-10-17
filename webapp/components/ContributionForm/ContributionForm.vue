@@ -43,6 +43,20 @@
             {{ formData.title.length }}/{{ formSchema.title.max }}
             <base-icon v-if="errors && errors.title" name="warning" />
           </ds-chip>
+
+
+          <ds-input
+            model="subtitle"
+            :placeholder="$t('contribution.subtitle')"
+            name="subtitle"
+            autofocus
+            size="large"
+          />
+          <ds-chip size="base" :color="errors && errors.subtitle && 'danger'">
+            {{ formData.subtitle.length }}/{{ formSchema.subtitle.max }}
+            <base-icon v-if="errors && errors.subtitle" name="warning" />
+          </ds-chip>
+
           <editor
             :users="users"
             :value="formData.content"
@@ -54,10 +68,42 @@
             <base-icon v-if="errors && errors.content" name="warning" />
           </ds-chip>
 
+          <ds-grid>
+            <ds-grid-item class="event-grid-item">
+              <!-- <label>Beginn</label> -->
+              <div class="event-grid-item-z-helper">
+                <date-picker
+                  name="eventStart"
+                  v-model="formData.xpDate"
+                  type="datetime"
+                  value-type="format"
+                  :minute-step="15"
+                  Xformat="DD-MM-YYYY HH:mm"
+                  class="event-grid-item-z-helper"
+                  :placeholder="$t('post.viewEvent.xpDate')"
+                  :disabled-date="notBeforeToday"
+                  :disabled-time="notBeforeNow"
+                  :show-second="false"
+                  @change="changeEventStart($event)"
+                ></date-picker>
+              </div>
+              <div
+                v-if="errors && errors.eventStart"
+                class="chipbox event-grid-item-margin-helper"
+              >
+                <ds-chip size="base" :color="errors && errors.eventStart && 'danger'">
+                  <base-icon name="warning" />
+                </ds-chip>
+              </div>
+            </ds-grid-item>
+          </ds-grid>
+
           <!-- Eventdata -->
           <div v-if="createEvent" class="eventDatas">
             <hr />
             <ds-space margin-top="x-small" />
+
+            <!-- Event Data -->
             <ds-grid>
               <ds-grid-item class="event-grid-item">
                 <!-- <label>Beginn</label> -->
@@ -224,10 +270,12 @@ export default {
   data() {
     const {
       title,
+      subtitle,
       content,
       image,
       categories,
       eventStart,
+      xpDate,
       eventEnd,
       eventLocationName,
       eventVenue,
@@ -244,6 +292,7 @@ export default {
       links,
       formData: {
         title: title || '',
+        subtitle: subtitle || '',
         content: content || '',
         image: image || null,
         imageAspectRatio,
@@ -251,6 +300,7 @@ export default {
         imageBlurred,
         categoryIds: categories ? categories.map((category) => category.id) : [],
         eventStart: eventStart || null,
+        xpDate: xpDate || null,
         eventEnd: eventEnd || null,
         eventLocation: eventLocation || '',
         eventLocationName: eventLocationName || '',
@@ -273,6 +323,7 @@ export default {
     formSchema() {
       return {
         title: { required: true, min: 3, max: 100 },
+        subtitle: { required: true, min: 3, max: 100 },
         content: { required: true },
         imageBlurred: { required: false },
         categoryIds: {
@@ -378,7 +429,7 @@ export default {
     submit() {
       let image = null
 
-      const { title, content, categoryIds } = this.formData
+      const { title, subtitle, content, categoryIds } = this.formData
       if (this.formData.image) {
         image = {
           sensitive: this.formData.imageBlurred,
@@ -396,6 +447,7 @@ export default {
           mutation: this.contribution.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
             title,
+            subtitle,
             content,
             categoryIds,
             id: this.contribution.id || null,

@@ -3,16 +3,30 @@
  * @presenter Color
  */
 
-$color-primary: rgb(23, 181, 63);
-$color-primary-light: rgb(96, 214, 98);
-$color-primary-dark: rgb(25, 122, 49);
-$color-primary-active: rgb(25, 194, 67);
+/**
+
+rgb(23, 181, 63); changed to rgb(82, 111, 152);
+rgb(96, 214, 98); ->  rgb(135, 162, 206);
+rgb(25, 122, 49) -> rgb(63, 71, 86);
+
+rgb(25, 194, 67);  -> rgb(0, 149, 250);
+
+rgb(26, 203, 71) -> rgb(162, 172, 189)
+
+https://mycolor.space/?hex=%23526F98&sub=1
+https://www.rapidtables.com/convert/color/hex-to-rgb.html
+ */
+
+$color-primary: rgb(82, 111, 152);
+$color-primary-light: rgb(135, 162, 206);
+$color-primary-dark: rgb(63, 71, 86);
+$color-primary-active: rgb(0, 149, 250);
 $color-primary-inverse: rgb(241, 253, 244);
 $color-secondary: rgb(0, 142, 230);
 $color-secondary-active: rgb(10, 161, 255);
 $color-secondary-inverse: rgb(240, 249, 255);
-$color-success: rgb(23, 181, 63);
-$color-success-active: rgb(26, 203, 71);
+$color-success: rgb(82, 111, 152);
+$color-success-active: rgb(162, 172, 189);
 $color-success-inverse: rgb(241, 253, 244);
 $color-danger: rgb(219, 57, 36);
 $color-danger-light: rgb(242, 97, 65);
@@ -55,13 +69,13 @@ $text-color-soft: rgb(112, 103, 126);
 $text-color-softer: rgb(177, 171, 186);
 $text-color-disabled: rgb(177, 171, 186);
 $text-color-inverse: rgb(250, 249, 250);
-$text-color-link: rgb(23, 181, 63);
-$text-color-link-active: rgb(25, 194, 67);
-$text-color-primary: rgb(23, 181, 63);
+$text-color-link: rgb(82, 111, 152);
+$text-color-link-active: rgb(0, 149, 250);
+$text-color-primary: rgb(82, 111, 152);
 $text-color-primary-inverse: rgb(241, 253, 244);
 $text-color-secondary: rgb(0, 142, 230);
 $text-color-secondary-inverse: rgb(240, 249, 255);
-$text-color-success: rgb(23, 181, 63);
+$text-color-success: rgb(82, 111, 152);
 $text-color-success-inverse: rgb(241, 253, 244);
 $text-color-warning: rgb(230, 121, 25);
 $text-color-warning-inverse: rgb(253, 247, 241);
@@ -84,8 +98,8 @@ $background-color-inverse-soft: rgb(40, 37, 45);
 $background-color-inverse-softer: rgb(75, 69, 84);
 $background-color-inverse-softer-active: rgb(100, 92, 112);
 $background-color-disabled: rgb(245, 244, 246);
-$background-color-primary: rgb(23, 181, 63);
-$background-color-primary-active: rgb(25, 194, 67);
+$background-color-primary: rgb(82, 111, 152);
+$background-color-primary-active: rgb(0, 149, 250);
 $background-color-primary-inverse: rgb(241, 253, 244);
 $background-color-secondary: rgb(0, 142, 230);
 $background-color-secondary-active: rgb(10, 161, 255);
@@ -93,8 +107,8 @@ $background-color-secondary-inverse: rgb(240, 249, 255);
 $background-color-third: rgb(126, 82, 204);
 $background-color-third-active: rgb(160, 103, 255);
 $background-color-third-inverse: rgb(239, 230, 255);
-$background-color-success: rgb(23, 181, 63);
-$background-color-success-active: rgb(26, 203, 71);
+$background-color-success: rgb(82, 111, 152);
+$background-color-success-active: rgb(162, 172, 189);
 $background-color-success-inverse: rgb(241, 253, 244);
 $background-color-warning: rgb(230, 121, 25);
 $background-color-warning-active: rgb(233, 137, 53);
@@ -112,9 +126,9 @@ $border-color-base: rgb(177, 171, 186);
 $border-color-soft: rgb(203, 199, 209);
 $border-color-softer: rgb(229, 227, 232);
 $border-color-softest: rgb(245, 244, 246);
-$border-color-active: rgb(23, 181, 63);
-$border-color-primary: rgb(23, 181, 63);
-$border-color-success: rgb(23, 181, 63);
+$border-color-active: rgb(82, 111, 152);
+$border-color-primary: rgb(82, 111, 152);
+$border-color-success: rgb(82, 111, 152);
 $border-color-warning: rgb(230, 121, 25);
 $border-color-danger: rgb(219, 57, 36);
 
@@ -359,37 +373,37 @@ $media-query-medium: (min-width: 768px);
 $media-query-large: (min-width: 1024px);
 $media-query-x-large: (min-width: 1200px);
 
-/** 
+/**
  * @tokens Background Images
  */
 
-/** 
+/**
  * @tokens Header Color
  */
 
 $color-header-background: $color-neutral-100;
 
-/** 
+/**
  * @tokens Footer Color
  */
 
 $color-footer-background: $color-neutral-100;
 $color-footer-link: $color-primary;
 
-/** 
+/**
  * @tokens Locale Menu Color
  */
 
 $color-locale-menu: $text-color-soft;
 
-/** 
+/**
  * @tokens Donation Bar Color
  */
 
 $color-donation-bar: $color-primary;
 $color-donation-bar-light: $color-primary-light;
 
-/** 
+/**
  * @tokens Toast Color
  */
 

@@ -19,7 +19,7 @@
           <div>
             <div>
               <h1 v-if="!createEvent" class="title">
-                {{ $t('post.createNewPost.title') }}
+                {{ $t('post.createNewXP.title') }}
               </h1>
               <h1 v-else class="title">
                 {{ $t('post.createNewEvent.title') }}

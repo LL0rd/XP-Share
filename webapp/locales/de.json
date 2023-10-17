@@ -325,6 +325,7 @@
       "supportedFormats": "Füge ein Bild im Dateiformat JPG, PNG oder GIF ein"
     },
     "title": "Titel",
+    "subtitle": "Untertitel",
     "visibleOnlyForMembersOfGroup": "Dieser Beitrag wird nur für Mitglieder der Gruppe „<b>{name}</b>“ sichtbar sein."
   },
   "delete": {
@@ -762,6 +763,12 @@
       },
       "title": "Erstelle einen Beitrag"
     },
+    "createNewXP": {
+      "forGroup": {
+        "title": "Für die Gruppe “{name}”"
+      },
+      "title": "Erstelle eine Erfarung"
+    },
     "edited": "bearbeitet",
     "editPost": {
       "event": "Bearbeite deine Veranstaltung",
@@ -789,6 +796,7 @@
       "eventIsOnline": "Online",
       "eventLocationName": "Stadt — z.B. Musterstraße 1, 12345 Musterstadt",
       "eventStart": "Beginn",
+      "xpDate": "Date of the experience",
       "eventVenue": "Veranstaltungsort — z.B. Hinterhof, 1. OG, …",
       "title": "Veranstaltung"
     },

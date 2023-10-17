@@ -325,6 +325,7 @@
       "supportedFormats": "Insert a picture of file format JPG, PNG or GIF"
     },
     "title": "Title",
+    "subtitle": "Subtitle",
     "visibleOnlyForMembersOfGroup": "This post will only be visible to members of the “<b>{name}</b>” group."
   },
   "delete": {
@@ -762,6 +763,12 @@
       },
       "title": "Create an Article"
     },
+    "createNewXP": {
+      "forGroup": {
+        "title": "For The Group “{name}”"
+      },
+      "title": "Create an Experience"
+    },
     "edited": "edited",
     "editPost": {
       "event": "Edit Your Event",
@@ -789,6 +796,7 @@
       "eventIsOnline": "Online",
       "eventLocationName": "City — e.g. Example Street 1, 12345 City",
       "eventStart": "Start",
+      "xpDate": "Date of the experience",
       "eventVenue": "Venue — e.g. Backyard, 1st Floor, …",
       "title": "Event"
     },
