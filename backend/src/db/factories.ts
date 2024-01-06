@@ -64,7 +64,7 @@ Factory.define('basicUser')
   .attrs({
     id: uuid,
     name: faker.name.fullName,
-    password: '1234',
+    password: faker.random.alphaNumeric(30),
     role: 'user',
     termsAndConditionsAgreedVersion: '0.0.1',
     termsAndConditionsAgreedAt: '2019-08-01T10:47:19.212Z',
@@ -147,7 +147,8 @@ Factory.define('post')
     deleted: false,
     imageBlurred: false,
     imageAspectRatio: 1.333,
-    clickedCount: 0,
+    clickedCount: 33,
+    subtitle: 'Subtitle',
     viewedTeaserCount: 0,
   })
   .attr('pinned', ['pinned'], (pinned) => {
@@ -158,7 +159,7 @@ Factory.define('post')
     return contentExcerpt || content
   })
   .attr('slug', ['slug', 'title'], (slug, title) => {
-    return slug || slugify(title, { lower: true })
+    return slug || slugify(title, { lower: true }) + '-' + faker.random.numeric(5)
   })
   .attr('language', ['language'], (language) => {
     return language || 'en'
