@@ -1,7 +1,7 @@
 <!-- Example Reference: https://codesandbox.io/s/v-mapbox-with-nuxt-lbrt6?file=/pages/index.vue -->
 <template>
   <div>
-    <ds-space margin="small">
+    <ds-space v-if="showMapLegend" margin="small">
       <ds-heading tag="h1">{{ $t('map.pageTitle') }}</ds-heading>
       <small>
         <div>
@@ -74,6 +74,13 @@ const maxMobileWidth = 639 // on this width and smaller the mapbox 'MapboxGeocod
 
 export default {
   name: 'Map',
+  props: {
+    showMapLegend: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
+  },
   mixins: [mobile(maxMobileWidth)],
   components: {
     Empty,

@@ -18,6 +18,7 @@
         </nuxt-link>
       </client-only>
     </div>
+
     <div>
       <div v-if="categoriesActive && SHOW_CONTENT_FILTER_MASONRY_GRID" class="top-filter-menu">
         <div class="filterButtonBox">
@@ -96,6 +97,10 @@
         <donation-info :goal="goal" :progress="progress" />
       </div>
     </div>
+
+    <!-- map -->
+    <map-section :showMapLegend="false"></map-section>
+
     <!-- content grid -->
     <masonry-grid
       :class="[
@@ -145,6 +150,8 @@ import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import HeaderButton from '~/components/FilterMenu/HeaderButton'
+import MapSection from '~/pages/map.vue'
+
 import { mapGetters, mapMutations } from 'vuex'
 import { DonationsQuery } from '~/graphql/Donations'
 import { filterPosts } from '~/graphql/PostQuery.js'
@@ -163,6 +170,7 @@ export default {
     MasonryGridItem,
     FilterMenuComponent,
     HeaderButton,
+    MapSection,
   },
   mixins: [postListActions, mobile()],
   data() {
