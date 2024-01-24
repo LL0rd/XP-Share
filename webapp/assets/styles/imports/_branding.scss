@@ -3,3 +3,29 @@
     * Here, all SCSS variables and classes can be adapted to your custom design. 
     *
 */
+a {
+  color: rgb(82, 111, 152);
+}
+
+a:hover,
+.ds-menu-item-link:hover {
+  color: rgb(82, 111, 152);
+}
+
+.ds-select-dropdown {
+  border-color: rgb(82, 111, 152);
+}
+
+.ds-input-has-focus {
+  .ds-select {
+    border-color: rgb(82, 111, 152);
+  }
+}
+
+.ds-menu-item-link {
+  &.router-link-exact-active {
+    color: rgb(82, 111, 152);
+    background-color: #faf9fa;
+    border-left: 2px solid rgb(82, 111, 152);
+  }
+}
