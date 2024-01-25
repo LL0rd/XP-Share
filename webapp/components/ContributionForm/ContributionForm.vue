@@ -9,91 +9,96 @@
     >
       <template #default="{ errors }">
         <base-card>
-          <template #heroImage>
-            <img
-              v-if="formData.image"
-              :src="formData.image | proxyApiUrl"
-              :class="['image', formData.imageBlurred && '--blur-image']"
-            />
-            <image-uploader
-              :hasImage="!!formData.image"
-              :class="[formData.imageBlurred && '--blur-image']"
-              @addHeroImage="addHeroImage"
-              @addImageAspectRatio="addImageAspectRatio"
-              @addImageType="addImageType"
-            />
-          </template>
-          <div v-if="formData.image" class="blur-toggle">
-            <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
-            <input type="checkbox" id="blur-img" v-model="formData.imageBlurred" />
-            <page-params-link class="link" :pageParams="links.FAQ">
-              {{ $t('contribution.inappropriatePicture') }}
-              <base-icon name="question-circle" />
-            </page-params-link>
-          </div>
-          <ds-space margin-top="base" />
-          <ds-input
-            model="title"
-            :placeholder="$t('contribution.title')"
-            name="title"
-            autofocus
-            size="large"
-          />
-          <ds-chip size="base" :color="errors && errors.title && 'danger'">
-            {{ formData.title.length }}/{{ formSchema.title.max }}
-            <base-icon v-if="errors && errors.title" name="warning" />
-          </ds-chip>
-
-
-          <ds-input
-            model="subtitle"
-            :placeholder="$t('contribution.subtitle')"
-            name="subtitle"
-            autofocus
-            size="large"
-          />
-          <ds-chip size="base" :color="errors && errors.subtitle && 'danger'">
-            {{ formData.subtitle.length }}/{{ formSchema.subtitle.max }}
-            <base-icon v-if="errors && errors.subtitle" name="warning" />
-          </ds-chip>
-
-          <editor
-            :users="users"
-            :value="formData.content"
-            :hashtags="hashtags"
-            @input="updateEditorContent"
-          />
-          <ds-chip size="base" :color="errors && errors.content && 'danger'">
-            {{ contentLength }}
-            <base-icon v-if="errors && errors.content" name="warning" />
-          </ds-chip>
-
           <ds-grid>
-            <ds-grid-item class="event-grid-item">
-              <!-- <label>Beginn</label> -->
-              <div class="event-grid-item-z-helper">
-                <date-picker
-                  name="eventStart"
-                  v-model="formData.xpDate"
-                  type="datetime"
-                  value-type="format"
-                  :minute-step="15"
-                  Xformat="DD-MM-YYYY HH:mm"
-                  class="event-grid-item-z-helper"
-                  :placeholder="$t('post.viewEvent.xpDate')"
-                  :disabled-date="notBeforeToday"
-                  :disabled-time="notBeforeNow"
-                  :show-second="false"
-                  @change="changeEventStart($event)"
-                ></date-picker>
+            <ds-grid-item column-span="fullWidth" :row-span="2">
+              <div class="event-grid-item">
+                <!-- <label>Beginn</label> -->
+                <div class="event-grid-item-z-helper">
+                  <date-picker
+                    name="eventStart"
+                    v-model="formData.xpDate"
+                    type="datetime"
+                    value-type="format"
+                    :minute-step="15"
+                    Xformat="DD-MM-YYYY HH:mm"
+                    class="event-grid-item-z-helper"
+                    :placeholder="$t('post.viewEvent.xpDate')"
+                    :disabled-date="notBeforeToday"
+                    :disabled-time="notBeforeNow"
+                    :show-second="false"
+                    @change="changeEventStart($event)"
+                  ></date-picker>
+                </div>
+                <div
+                  v-if="errors && errors.eventStart"
+                  class="chipbox event-grid-item-margin-helper"
+                >
+                  <ds-chip size="base" :color="errors && errors.eventStart && 'danger'">
+                    <base-icon name="warning" />
+                  </ds-chip>
+                </div>
               </div>
-              <div
-                v-if="errors && errors.eventStart"
-                class="chipbox event-grid-item-margin-helper"
-              >
-                <ds-chip size="base" :color="errors && errors.eventStart && 'danger'">
-                  <base-icon name="warning" />
-                </ds-chip>
+            </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="2">
+              <ds-input
+                model="title"
+                :placeholder="$t('contribution.title')"
+                name="title"
+                autofocus
+                size="large"
+              />
+              <ds-chip size="base" :color="errors && errors.title && 'danger'">
+                {{ formData.title.length }}/{{ formSchema.title.max }}
+                <base-icon v-if="errors && errors.title" name="warning" />
+              </ds-chip>
+            </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="2">
+              <ds-input
+                model="subtitle"
+                :placeholder="$t('contribution.subtitle')"
+                name="subtitle"
+                autofocus
+                size="large"
+              />
+              <ds-chip size="base" :color="errors && errors.subtitle && 'danger'">
+                {{ formData.subtitle.length }}/{{ formSchema.subtitle.max }}
+                <base-icon v-if="errors && errors.subtitle" name="warning" />
+              </ds-chip>
+            </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="6">
+              <editor
+                :users="users"
+                :value="formData.content"
+                :hashtags="hashtags"
+                @input="updateEditorContent"
+              />
+              <ds-chip size="base" :color="errors && errors.content && 'danger'">
+                {{ contentLength }}
+                <base-icon v-if="errors && errors.content" name="warning" />
+              </ds-chip>
+            </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="12">
+              <div class="image-upload-section">
+                <img
+                  v-if="formData.image"
+                  :src="formData.image | proxyApiUrl"
+                  :class="['image', formData.imageBlurred && '--blur-image']"
+                />
+                <image-uploader
+                  :hasImage="!!formData.image"
+                  :class="[formData.imageBlurred && '--blur-image']"
+                  @addHeroImage="addHeroImage"
+                  @addImageAspectRatio="addImageAspectRatio"
+                  @addImageType="addImageType"
+                />
+              </div>
+              <div v-if="formData.image" class="blur-toggle">
+                <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
+                <input type="checkbox" id="blur-img" v-model="formData.imageBlurred" />
+                <page-params-link class="link" :pageParams="links.FAQ">
+                  {{ $t('contribution.inappropriatePicture') }}
+                  <base-icon name="question-circle" />
+                </page-params-link>
               </div>
             </ds-grid-item>
           </ds-grid>
@@ -193,7 +198,7 @@
               {{ $t('post.viewEvent.eventIsOnline') }}
             </div>
           </div>
-          <ds-space margin-top="x-small" />
+          <ds-space margin-top="base" />
           <categories-select
             v-if="categoriesActive"
             model="categoryIds"
@@ -569,7 +574,7 @@ export default {
   }
 }
 
-.contribution-form > .base-card {
+.contribution-form .base-card {
   display: flex;
   flex-direction: column;
 
@@ -672,11 +677,41 @@ export default {
     border-color: #c8c8c8;
   }
   .mx-datepicker input:focus {
-    border-color: #17b53f;
     background-color: #fff;
   }
   .mx-datepicker-error {
     border-color: #cf2619;
+  }
+}
+
+.image-upload-section {
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+
+  .image-uploader {
+    height: 400px;
+  }
+}
+
+.contribution-form {
+  .base-card {
+    display: flex;
+    flex-direction: column;
+
+    .ds-form-item {
+      margin: 0;
+    }
+
+    .ds-chip {
+      float: right;
+      margin: $space-xx-small 0 $space-base;
+      cursor: default;
+    }
   }
 }
 </style>

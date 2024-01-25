@@ -7,6 +7,13 @@ a {
   color: rgb(82, 111, 152);
 }
 
+input {
+  &:focus {
+    border-color: rgb(82, 111, 152);
+    background: #fff;
+  }
+}
+
 a:hover,
 .ds-menu-item-link:hover {
   color: rgb(82, 111, 152);
