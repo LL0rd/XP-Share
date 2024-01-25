@@ -44,6 +44,7 @@
             >
               <post-teaser
                 :post="post"
+                :searchString="search"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="posts = removePostFromList(post, posts)"
                 @pinPost="pinPost(post, refetchPostList)"
@@ -365,6 +366,7 @@ export default {
         return !this.search
       },
       update({ searchPosts }) {
+        console.log(searchPosts.posts)
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
         if (this.postCount > 0) this.activeTab = 'Post'
