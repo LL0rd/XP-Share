@@ -20,3 +20,7 @@ cypress.env.json
 release/
 *~
 /backend/build/
+/backend/src/db/old_data.ts
+/backend/src/db/locations.ts
+/backend/src/db/locations/
+/backend/import.sh

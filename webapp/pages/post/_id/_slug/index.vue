@@ -53,7 +53,7 @@
               </client-only>
             </section>
             <ds-space margin-bottom="small" />
-            <h2 class="title hyphenate-text">{{ post.title }}</h2>
+            <h2 class="title hyphenate-text">{{ post.title }}<br>{{ post.subtitle }}</h2>
             <!-- event data -->
             <ds-space
               v-if="post && post.postType[0] === 'Event'"
@@ -379,7 +379,7 @@ export default {
     position: relative;
     /*  The padding top makes sure the correct height is set (according to the
         hero image aspect ratio) before the hero image loads so
-        the autoscroll works correctly when following a comment link. 
+        the autoscroll works correctly when following a comment link.
       */
 
     padding-top: calc(var(--hero-image-aspect-ratio) * (100% + 48px));

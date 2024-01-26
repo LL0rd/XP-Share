@@ -10,6 +10,7 @@ input _PostFilter {
   author_in: [_UserFilter!]
   author_not_in: [_UserFilter!]
   title: String
+  subtitle: String
   title_not: String
   title_in: [String!]
   title_not_in: [String!]
@@ -118,6 +119,7 @@ type Post {
   objectId: String
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
+  subtitle: String
   slug: String!
   content: String!
   contentExcerpt: String
@@ -204,6 +206,7 @@ type Mutation {
   CreatePost(
     id: ID
     title: String!
+    subtitle: String
     slug: String
     content: String!
     image: ImageInput,
@@ -218,6 +221,7 @@ type Mutation {
   UpdatePost(
     id: ID!
     title: String!
+    subtitle: String
     slug: String
     content: String!
     contentExcerpt: String
@@ -245,6 +249,7 @@ type Query {
   Post(
     id: ID
     title: String
+    subtitle: String
     slug: String
     content: String
     visibility: Visibility

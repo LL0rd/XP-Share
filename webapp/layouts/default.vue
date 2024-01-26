@@ -57,7 +57,7 @@ export default {
 
 <style lang="scss">
 .main-navigation {
-  background-color: $color-header-background;
+  background-color: #16222d;
 }
 .main-container {
   padding-top: 6rem;

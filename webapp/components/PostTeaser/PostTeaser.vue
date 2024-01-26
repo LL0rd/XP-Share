@@ -24,7 +24,7 @@
           />
         </div>
       </client-only>
-      <h2 class="title hyphenate-text">{{ post.title }}</h2>
+      <h2 class="title hyphenate-text" v-html="postTitle" />
       <ds-space
         v-if="post && post.postType[0] === 'Event'"
         margin-bottom="small"
@@ -138,6 +138,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    searchString: {
+      type: String,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -158,8 +162,19 @@ export default {
     ...mapGetters({
       user: 'auth/user',
     }),
+    postTitle() {
+      return this.post.title.replace(
+        this.searchString,
+        '<span class="search-result-highlight">' + this.searchString + '</span>',
+      )
+    },
     excerpt() {
-      return this.$filters.removeLinks(this.post.contentExcerpt)
+      return this.$filters.removeLinks(
+        this.post.contentExcerpt.replace(
+          this.searchString,
+          '<span class="search-result-highlight">' + this.searchString + '</span>',
+        ),
+      )
     },
     isAuthor() {
       const { author } = this.post

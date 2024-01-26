@@ -59,6 +59,7 @@ export default () => {
       mutation (
         $id: ID!
         $title: String!
+        $subtitle: String!
         $content: String!
         $image: ImageInput
         $categoryIds: [ID]
@@ -68,6 +69,7 @@ export default () => {
         UpdatePost(
           id: $id
           title: $title
+          subtitle: $subtitle
           content: $content
           image: $image
           categoryIds: $categoryIds
@@ -76,6 +78,7 @@ export default () => {
         ) {
           id
           title
+          subtitle
           slug
           content
           contentExcerpt

@@ -48,6 +48,7 @@ export const postFragment = gql`
   fragment post on Post {
     id
     title
+    subtitle
     content
     contentExcerpt
     createdAt
