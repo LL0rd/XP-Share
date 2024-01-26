@@ -59,11 +59,11 @@ export default {
           path: `/post/create`,
           type: 'post',
         },
-        {
-          name: this.$t('post.event'),
-          path: `/`,
-          type: 'event',
-        },
+        // {
+        //   name: this.$t('post.event'),
+        //   path: `/`,
+        //   type: 'event',
+        // },
       ]
     },
   },
