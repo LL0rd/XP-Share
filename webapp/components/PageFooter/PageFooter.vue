@@ -8,13 +8,9 @@
       <span class="division-space">&nbsp;</span>
     </span>
     <!-- version -->
-    <a
-      href="https://github.com/Ocelot-Social-Community/Ocelot-Social/releases"
-      target="_blank"
-      data-test="version-link"
-    >
+
       {{ version }}
-    </a>
+
   </div>
 </template>
 

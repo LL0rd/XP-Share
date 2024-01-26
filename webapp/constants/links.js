@@ -5,7 +5,7 @@ import { defaultPageParamsPages } from '~/components/utils/InternalPages.js'
 const ORGANIZATION = defaultPageParamsPages.ORGANIZATION.overwrite({
   // if defined it's dominating
   externalLink: {
-    url: 'https://ocelot.social',
+    url: 'https://whoknows.me/',
     target: '_blank',
   },
 
@@ -23,7 +23,7 @@ const DONATE = defaultPageParamsPages.DONATE.overwrite({
   // if defined it's dominating
   externalLink: {
     // we use 'ocelot-social.herokuapp.com' at the moment, because redirections of 'ocelot.social' subpages are not working correctly
-    url: 'https://ocelot-social.herokuapp.com/donations',
+    url: 'https://whoknows.me/help/',
     target: '_blank',
   },
 
@@ -38,11 +38,7 @@ const DONATE = defaultPageParamsPages.DONATE.overwrite({
   },
 })
 const IMPRINT = defaultPageParamsPages.IMPRINT.overwrite({
-  externalLink: {
-    // we use 'ocelot-social.herokuapp.com' at the moment, because redirections of 'ocelot.social' subpages are not working correctly
-    url: 'https://ocelot-social.herokuapp.com/imprint',
-    target: '_blank',
-  },
+
 
   internalPage: {
     // footerIdent: 'site.imprint', // localized string identifier, if undefined default is used
@@ -140,12 +136,12 @@ export default {
 
   FOOTER_LINK_LIST: [
     ORGANIZATION,
-    TERMS_AND_CONDITIONS,
-    CODE_OF_CONDUCT,
+    //TERMS_AND_CONDITIONS,
+    //CODE_OF_CONDUCT,
     DATA_PRIVACY,
-    FAQ,
+    //FAQ,
     DONATE,
-    SUPPORT,
+    //SUPPORT,
     IMPRINT,
   ],
 }
