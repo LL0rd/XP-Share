@@ -15,7 +15,7 @@
                 <!-- <label>Beginn</label> -->
                 <div class="event-grid-item-z-helper">
                   <date-picker
-                    name="eventStart"
+                    name="xpDate"
                     v-model="formData.xpDate"
                     type="datetime"
                     value-type="format"
@@ -23,10 +23,8 @@
                     Xformat="DD-MM-YYYY HH:mm"
                     class="event-grid-item-z-helper"
                     :placeholder="$t('post.viewEvent.xpDate')"
-                    :disabled-date="notBeforeToday"
-                    :disabled-time="notBeforeNow"
                     :show-second="false"
-                    @change="changeEventStart($event)"
+                    @change="changeXPDate($event)"
                   ></date-picker>
                 </div>
                 <div
@@ -64,6 +62,17 @@
                 {{ formData.subtitle.length }}/{{ formSchema.subtitle.max }}
                 <base-icon v-if="errors && errors.subtitle" name="warning" />
               </ds-chip>
+            </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="2">
+              <ds-select
+                size="large"
+                model="xpType"
+                :options="[
+                  $t('contribution.dream'),
+                  $t('contribution.nature'),
+                  $t('contribution.meditation'),
+                ]"
+              ></ds-select>
             </ds-grid-item>
             <ds-grid-item column-span="fullWidth" :row-span="6">
               <editor
@@ -276,11 +285,15 @@ export default {
     const {
       title,
       subtitle,
+      xpType,
+      isPrivate,
+      isAno,
+      isEncrypted,
+      xpDate,
       content,
       image,
       categories,
       eventStart,
-      xpDate,
       eventEnd,
       eventLocationName,
       eventVenue,
@@ -298,6 +311,11 @@ export default {
       formData: {
         title: title || '',
         subtitle: subtitle || '',
+        xpType: xpType || '',
+        isPrivate: isPrivate || false,
+        isAno: isAno || false,
+        isEncrypted: isEncrypted || false,
+        xpDate: xpDate || '',
         content: content || '',
         image: image || null,
         imageAspectRatio,
@@ -305,7 +323,6 @@ export default {
         imageBlurred,
         categoryIds: categories ? categories.map((category) => category.id) : [],
         eventStart: eventStart || null,
-        xpDate: xpDate || null,
         eventEnd: eventEnd || null,
         eventLocation: eventLocation || '',
         eventLocationName: eventLocationName || '',
@@ -328,7 +345,8 @@ export default {
     formSchema() {
       return {
         title: { required: true, min: 3, max: 100 },
-        subtitle: { required: true, min: 3, max: 100 },
+        subtitle: { required: false, min: 3, max: 100 },
+        xpType: { required: false },
         content: { required: true },
         imageBlurred: { required: false },
         categoryIds: {
@@ -434,7 +452,8 @@ export default {
     submit() {
       let image = null
 
-      const { title, subtitle, content, categoryIds } = this.formData
+      const { title, subtitle, content, categoryIds, xpType, isPrivate, isAno, isEncrypted, xpDate } =
+        this.formData
       if (this.formData.image) {
         image = {
           sensitive: this.formData.imageBlurred,
@@ -453,6 +472,11 @@ export default {
           variables: {
             title,
             subtitle,
+            xpType,
+            isPrivate,
+            isAno,
+            isEncrypted,
+            xpDate,
             content,
             categoryIds,
             id: this.contribution.id || null,
@@ -488,6 +512,9 @@ export default {
     },
     changeEventStart(event) {
       this.$refs.contributionForm.update('eventStart', event)
+    },
+    changeXPDate(event) {
+      this.$refs.contributionForm.update('xpDate', event)
     },
     addHeroImage(file) {
       this.formData.image = null

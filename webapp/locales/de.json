@@ -245,6 +245,9 @@
     "amount-comments": "{amount} comments",
     "amount-shouts": "{amount} recommendations",
     "amount-views": "{amount} views",
+    "dream": "Traum",
+    "nature": "Natur & Gesundheit",
+    "meditation": "Meditation",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Themen ausgewählt"
     },

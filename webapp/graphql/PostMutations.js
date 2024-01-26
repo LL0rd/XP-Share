@@ -6,6 +6,12 @@ export default () => {
       mutation (
         $id: ID
         $title: String!
+        $subtitle: String
+        $xpType: String
+        $isPrivate: Boolean
+        $isAno: Boolean
+        $isEncrypted: Boolean
+        $xpDate: String
         $slug: String
         $content: String!
         $categoryIds: [ID]
@@ -18,6 +24,12 @@ export default () => {
           id: $id
           title: $title
           slug: $slug
+          subtitle: $subtitle
+          xpType: $xpType
+          isPrivate: $isPrivate
+          isAno: $isAno
+          isEncrypted: $isEncrypted
+          xpDate: $xpDate
           content: $content
           categoryIds: $categoryIds
           image: $image
@@ -28,6 +40,12 @@ export default () => {
           id
           slug
           title
+          subtitle
+          xpType
+          isPrivate
+          isAno
+          isEncrypted
+          xpDate
           content
           contentExcerpt
           language
@@ -59,9 +77,15 @@ export default () => {
       mutation (
         $id: ID!
         $title: String!
-        $subtitle: String!
+        $subtitle: String
+        $xpType: String
+        $isPrivate: Boolean
+        $isAno: Boolean
+        $isEncrypted: Boolean
+        $xpDate: String
         $content: String!
         $image: ImageInput
+        $xpDate: String
         $categoryIds: [ID]
         $postType: PostType
         $eventInput: _EventInput
@@ -70,8 +94,14 @@ export default () => {
           id: $id
           title: $title
           subtitle: $subtitle
+          xpType: $xpType
+          isPrivate: $isPrivate
+          isAno: $isAno
+          isEncrypted: $isEncrypted
+          xpDate: $xpDate
           content: $content
           image: $image
+          xpDate: $xpDate
           categoryIds: $categoryIds
           postType: $postType
           eventInput: $eventInput
@@ -79,6 +109,11 @@ export default () => {
           id
           title
           subtitle
+          xpType
+          isPrivate
+          isAno
+          isEncrypted
+          xpDate
           slug
           content
           contentExcerpt

@@ -11,6 +11,11 @@ input _PostFilter {
   author_not_in: [_UserFilter!]
   title: String
   subtitle: String
+  xpType: String
+  isPrivate:Boolean
+  isAno:Boolean
+  isEncrypted:Boolean
+  xpDate: String
   title_not: String
   title_in: [String!]
   title_not_in: [String!]
@@ -120,6 +125,11 @@ type Post {
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
   subtitle: String
+  xpType: String
+  isPrivate:Boolean
+  isAno:Boolean
+  isEncrypted:Boolean
+  xpDate: String
   slug: String!
   content: String!
   contentExcerpt: String
@@ -207,6 +217,11 @@ type Mutation {
     id: ID
     title: String!
     subtitle: String
+    xpType: String
+    isPrivate:Boolean
+    isAno:Boolean
+    isEncrypted:Boolean
+    xpDate: String
     slug: String
     content: String!
     image: ImageInput,
@@ -222,6 +237,11 @@ type Mutation {
     id: ID!
     title: String!
     subtitle: String
+    xpType: String
+    isPrivate:Boolean
+    isAno:Boolean
+    isEncrypted:Boolean
+    xpDate:String
     slug: String
     content: String!
     contentExcerpt: String
@@ -250,6 +270,11 @@ type Query {
     id: ID
     title: String
     subtitle: String
+    xpType: String
+    isPrivate:Boolean
+    isAno:Boolean
+    isEncrypted:Boolean
+    xpDate: String
     slug: String
     content: String
     visibility: Visibility

@@ -7,6 +7,12 @@ export const createPostMutation = () => {
     mutation (
       $id: ID
       $title: String!
+      $subtitle: String
+      $xpType: String
+      $isPrivate: String
+      $isAno: Boolean
+      $isEncrypted: Boolean
+      $xpDate: xpDate
       $slug: String
       $content: String!
       $categoryIds: [ID]
@@ -17,6 +23,12 @@ export const createPostMutation = () => {
       CreatePost(
         id: $id
         title: $title
+        subtitle: $subtitle
+        xpType: $xpType
+        isPrivate: $isPrivate
+        isAno: $isAno
+        isEncrypted: $isEncrypted
+        xpDate: $xpDate
         slug: $slug
         content: $content
         categoryIds: $categoryIds
@@ -27,6 +39,12 @@ export const createPostMutation = () => {
         id
         slug
         title
+        subtitle
+        xpType
+        isPrivate
+        isAno
+        isEncrypted
+        xpDate
         content
         disabled
         deleted

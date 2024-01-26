@@ -17,6 +17,8 @@ export default {
     direction: 'in',
   },
   title: { type: 'string', disallow: [null], min: 3 },
+  subtitle: { type: 'string', disallow: [null] },
+  xpType: { type: 'string', disallow: [null] },
   slug: { type: 'string', allow: [null], unique: 'true' },
   content: { type: 'string', disallow: [null], min: 3 },
   contentExcerpt: { type: 'string', allow: [null] },
