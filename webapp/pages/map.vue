@@ -39,6 +39,7 @@
         :hash="false"
         :min-pitch="0"
         :max-pitch="60"
+        :projection="mapOptions.projection"
         @load="onMapLoad"
       >
         <map-styles-buttons
@@ -146,6 +147,9 @@ export default {
         popup: null,
         popupOnLeaveTimeoutId: null,
       },
+      clusters: {
+        geoJSON: [],
+      },
     }
   },
   async mounted() {
@@ -175,19 +179,19 @@ export default {
     availableStyles() {
       // https://docs.mapbox.com/api/maps/styles/
       const availableStyles = {
+        dark: {
+          url: 'mapbox://styles/mapbox/dark-v11?optimize=true',
+        },
         outdoors: {
           url: 'mapbox://styles/mapbox/outdoors-v12?optimize=true',
         },
         streets: {
-          url: 'mapbox://styles/mapbox/streets-v11?optimize=true',
+          url: 'mapbox://styles/mapbox/streets-v12?optimize=true',
           // use the newest version?
           // url: 'mapbox://styles/mapbox/streets-v12',
         },
         satellite: {
-          url: 'mapbox://styles/mapbox/satellite-streets-v11?optimize=true',
-        },
-        dark: {
-          url: 'mapbox://styles/mapbox/dark-v10?optimize=true',
+          url: 'mapbox://styles/mapbox/satellite-streets-v12?optimize=true',
         },
       }
       Object.keys(availableStyles).map((key) => {
@@ -198,11 +202,11 @@ export default {
     mapOptions() {
       return {
         // accessToken: this.$env.MAPBOX_TOKEN, // is set already above
-        style: !this.activeStyle ? this.availableStyles.outdoors.url : this.activeStyle,
+        style: !this.activeStyle ? this.availableStyles.dark.url : this.activeStyle,
         center: this.mapCenter,
         zoom: this.mapZoom,
         maxZoom: 22,
-        // projection: 'globe', // the package is probably to old, because of Vue2: https://docs.mapbox.com/mapbox-gl-js/example/globe/
+        projection: 'globe', // the package is probably to old, because of Vue2: https://docs.mapbox.com/mapbox-gl-js/example/globe/
       }
     },
     mapCenter() {
@@ -223,14 +227,20 @@ export default {
     onMapLoad({ map }) {
       this.map = map
 
-      // set the default atmosphere style
-      // this.map.setFog({}) // the package is probably to old, because of Vue2: https://docs.mapbox.com/mapbox-gl-js/example/globe/
-
       this.map.on('style.load', (value) => {
         // Triggered when `setStyle` is called.
         this.markers.isImagesLoaded = false
         this.markers.isSourceAndLayerAdded = false
         this.loadMarkersIconsAndAddMarkers()
+
+        // set the default atmosphere style
+        this.map.setFog({
+          color: 'rgb(186, 210, 235)', // Lower atmosphere
+          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
+          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
+          'space-color': 'rgb(11, 11, 25)', // Background color
+          'star-intensity': 0.6, // Background star brightness (default 0.35 at low zoooms )
+        })
       })
 
       // add search field for locations
@@ -428,10 +438,11 @@ export default {
             })
           }
         })
+
         // add markers for "posts", post type "Event" with location coordinates
         this.posts.forEach((post) => {
           if (post.postType.includes('Event') && post.eventLocation) {
-            this.markers.geoJSON.push({
+            this.clusters.geoJSON.push({
               type: 'Feature',
               properties: {
                 type: 'event',
@@ -477,6 +488,84 @@ export default {
             // 'text-anchor': 'top',
             // 'text-allow-overlap': true,
           },
+        })
+
+        //CLUSTERING
+        this.map.addSource('eventcluster', {
+          type: 'geojson',
+          // data: this.markers.geoJSON, //'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: this.clusters.geoJSON,
+          },
+          cluster: true,
+          clusterMaxZoom: 14, // Max zoom to cluster points on
+          clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+        })
+
+        this.map.addLayer({
+          id: 'clusters',
+          type: 'circle',
+          source: 'eventcluster',
+          filter: ['has', 'point_count'],
+          paint: {
+            // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
+            // with three steps to implement three types of circles:
+            //   * Blue, 20px circles when point count is less than 100
+            //   * Yellow, 30px circles when point count is between 100 and 750
+            //   * Pink, 40px circles when point count is greater than or equal to 750
+            'circle-color': [
+              'step',
+              ['get', 'point_count'],
+              '#7753EB',
+              100,
+              '#7753EB',
+              750,
+              '#7753EB',
+            ],
+            'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+          },
+        })
+
+        this.map.addLayer({
+          id: 'cluster-count',
+          type: 'symbol',
+          source: 'eventcluster',
+          filter: ['has', 'point_count'],
+          layout: {
+            'text-field': ['get', 'point_count_abbreviated'],
+            'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+            'text-size': 12,
+          },
+        })
+
+        this.map.addLayer({
+          id: 'unclustered-point',
+          type: 'symbol',
+          source: 'eventcluster',
+          filter: ['!', ['has', 'point_count']],
+          layout: {
+            'icon-image': ['get', 'iconName'], // get the "icon-image" from the source's "iconName" property
+            'icon-allow-overlap': true,
+            'icon-size': 1.0,
+            'icon-rotate': ['get', 'iconRotate'], // get the "icon-rotate" from the source's "iconRotate" property
+          },
+        })
+
+        // inspect a cluster on click
+        this.map.on('click', 'clusters', (e) => {
+          const features = map.queryRenderedFeatures(e.point, {
+            layers: ['clusters'],
+          })
+          const clusterId = features[0].properties.cluster_id
+          map.getSource('eventcluster').getClusterExpansionZoom(clusterId, (err, zoom) => {
+            if (err) return
+
+            map.easeTo({
+              center: features[0].geometry.coordinates,
+              zoom: zoom,
+            })
+          })
         })
 
         this.markers.isSourceAndLayerAdded = true
@@ -554,7 +643,7 @@ export default {
         return {
           filter: {
             postType_in: ['Event'],
-            eventStart_gte: new Date(),
+            //eventStart_gte: new Date(),
             // would be good to just query for events with defined "eventLocation". couldn't get it working
           },
         }
