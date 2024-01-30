@@ -64,15 +64,19 @@
               </ds-chip>
             </ds-grid-item>
             <ds-grid-item column-span="fullWidth" :row-span="2">
-              <ds-select
-                size="large"
-                model="xpType"
-                :options="[
-                  $t('contribution.dream'),
-                  $t('contribution.nature'),
-                  $t('contribution.meditation'),
-                ]"
-              ></ds-select>
+              <select v-model="formData.xpType" size="large">
+                <option disabled value="">Please select one</option>
+                <option value="contribution.dream">{{ $t('contribution.dream') }}</option>
+                <option value="contribution.nature">{{ $t('contribution.nature') }}</option>
+                <option value="contribution.meditation">{{ $t('contribution.meditation') }}</option>
+                <option value="contribution.nde">{{ $t('contribution.nde') }}</option>
+                <option value="contribution.sky">{{ $t('contribution.sky') }}</option>
+                <option value="contribution.psycho">{{ $t('contribution.psycho') }}</option>
+                <option value="contribution.supernatural">{{ $t('contribution.supernatural') }}</option>
+
+
+              </select>
+
             </ds-grid-item>
             <ds-grid-item column-span="fullWidth" :row-span="6">
               <editor

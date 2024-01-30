@@ -248,6 +248,10 @@
     "dream": "Traum",
     "nature": "Natur & Gesundheit",
     "meditation": "Meditation",
+    "nde": "Nahtoderfahrung",
+    "sky": "Himmelsphänomen",
+    "psycho": "Psychodelische Reisen",
+    "supernatural": "Übernatürliche Phänomene",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Themen ausgewählt"
     },
