@@ -2,7 +2,7 @@
   <ds-form v-model="form" @submit="handleSubmit" class="comment-form">
     <template #default="{ errors }">
       <base-card>
-        <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
+        <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" :showToolbar="false"/>
         <div class="buttons">
           <base-button
             :disabled="disabled && !update"

@@ -78,6 +78,7 @@
                 :value="formData.content"
                 :hashtags="hashtags"
                 @input="updateEditorContent"
+                :showToolbar="false"
               />
               <ds-chip size="base" :color="errors && errors.content && 'danger'">
                 {{ contentLength }}

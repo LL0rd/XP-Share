@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <menu-bar :editor="editor" :toggleLinkInput="toggleLinkInput" />
+    <menu-bar v-if="showToolbar" m :editor="editor" :toggleLinkInput="toggleLinkInput" />
     <editor-content ref="editor" :editor="editor" class="ds-input editor-content" />
     <context-menu ref="contextMenu" />
     <suggestion-list
@@ -52,6 +52,11 @@ export default {
     hashtags: { type: Array, default: () => null }, // If 'null', than the Hashtag extention is not assigned.
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
+    showToolbar: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
   },
   data() {
     return {
