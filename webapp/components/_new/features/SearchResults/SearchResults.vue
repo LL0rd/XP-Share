@@ -15,6 +15,14 @@
         <!-- tabs -->
         <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switch-tab="switchTab" />
 
+        <!-- map -->
+
+        <ds-grid-item  :row-span="1" column-span="fullWidth">
+          <ds-space margin-bottom="xxx-small" margin-top="xxx-small" centered>
+            <map-section :showMapLegend="false"></map-section>
+          </ds-space>
+        </ds-grid-item>
+
         <!-- search results -->
 
         <template v-if="!(!activeResourceCount || searchCount === 0)">
@@ -119,6 +127,7 @@ import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import GroupTeaser from '~/components/Group/GroupTeaser'
 import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 import HcHashtag from '~/components/Hashtag/Hashtag'
+import MapSection from '~/pages/map.vue'
 
 export default {
   name: 'SearchResults',
@@ -132,6 +141,7 @@ export default {
     UserTeaser,
     GroupTeaser,
     HcHashtag,
+    MapSection,
   },
   mixins: [postListActions],
   props: {
@@ -366,7 +376,6 @@ export default {
         return !this.search
       },
       update({ searchPosts }) {
-        console.log(searchPosts.posts)
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
         if (this.postCount > 0) this.activeTab = 'Post'

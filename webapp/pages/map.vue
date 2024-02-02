@@ -493,7 +493,6 @@ export default {
         //CLUSTERING
         this.map.addSource('eventcluster', {
           type: 'geojson',
-          // data: this.markers.geoJSON, //'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
           data: {
             type: 'FeatureCollection',
             features: this.clusters.geoJSON,
