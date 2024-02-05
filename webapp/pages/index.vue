@@ -101,6 +101,58 @@
     <!-- map -->
     <map-section :showMapLegend="false"></map-section>
 
+
+
+    <!-- category icon -->
+    <!-- TODO add to component -->
+    <template>
+      <div>
+        <ds-space margin-top="large">
+          <ds-flex>
+          <ds-flex-item align="center">
+            <button>
+              <img :src="'/img/xp-types/dreams.png'" class="xp-type-image"/>
+            <ds-text size="small"> {{ $t("contribution.dream") }}</ds-text>
+            </button>
+            
+          </ds-flex-item>
+          <ds-flex-item align="center">
+            <img :src="'/img/xp-types/nature-and-health.png'" class="xp-type-image" />
+            <ds-text size="small">{{ $t("contribution.nature") }}</ds-text>
+
+          </ds-flex-item>
+          <ds-flex-item align="center">
+            <img :src="'/img/xp-types/meditation.png'" class="xp-type-image" />
+            <ds-text size="small">{{ $t("contribution.meditation") }}</ds-text>
+
+          </ds-flex-item>
+          <ds-flex-item align="center">
+            <img :src="'/img/xp-types/celestial-phenomenon.png'" class="xp-type-image" />
+            <ds-text size="small">{{ $t("contribution.sky") }}</ds-text>
+
+          </ds-flex-item>
+          <ds-flex-item align="center">
+            <img :src="'/img/xp-types/psychodelic-journey.png'" class="xp-type-image" />
+            <ds-text size="small">{{ $t("contribution.psycho") }}</ds-text>
+
+          </ds-flex-item>
+          <ds-flex-item align="center">
+            <img :src="'/img/xp-types/near-death-experience.png'" class="xp-type-image" />
+            <ds-text size="small">{{ $t("contribution.nde") }}</ds-text>
+
+          </ds-flex-item>
+          <ds-flex-item align="center"> 
+            <img :src="'/img/xp-types/supernatural-phenomena.png'" class="xp-type-image" />
+            <ds-text size="small">{{ $t("contribution.supernatural") }}</ds-text>
+
+          </ds-flex-item>
+        </ds-flex>
+    </ds-space>
+    
+      </div>
+    </template>
+
+
     <!-- content grid -->
     <masonry-grid
       :class="[
@@ -233,6 +285,8 @@ export default {
     }
     document.addEventListener('click', this.showFilterMenu)
     window.addEventListener('scroll', this.handleScroll)
+    debugger;
+
   },
   methods: {
     ...mapMutations({
