@@ -110,45 +110,49 @@
         <ds-space margin-top="large">
           <ds-flex>
           <ds-flex-item align="center">
-            <button>
+            <button @click='filterXPType($t("contribution.dream"))' >
               <img :src="'/img/xp-types/dreams.png'" class="xp-type-image"/>
-            <ds-text size="small"> {{ $t("contribution.dream") }}</ds-text>
+              <ds-text size="small"> {{ $t("contribution.dream") }}</ds-text>
             </button>
-            
           </ds-flex-item>
           <ds-flex-item align="center">
-            <img :src="'/img/xp-types/nature-and-health.png'" class="xp-type-image" />
-            <ds-text size="small">{{ $t("contribution.nature") }}</ds-text>
-
+            <button @click='filterXPType($t("contribution.nature"))' >
+              <img :src="'/img/xp-types/nature-and-health.png'" class="xp-type-image" />
+              <ds-text size="small">{{ $t("contribution.nature") }}</ds-text>
+            </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <img :src="'/img/xp-types/meditation.png'" class="xp-type-image" />
-            <ds-text size="small">{{ $t("contribution.meditation") }}</ds-text>
-
+            <button @click='filterXPType($t("contribution.meditation"))' >
+              <img :src="'/img/xp-types/meditation.png'" class="xp-type-image" />
+              <ds-text size="small">{{ $t("contribution.meditation") }}</ds-text>
+            </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <img :src="'/img/xp-types/celestial-phenomenon.png'" class="xp-type-image" />
-            <ds-text size="small">{{ $t("contribution.sky") }}</ds-text>
-
+            <button @click='filterXPType($t("contribution.sky"))' >
+              <img :src="'/img/xp-types/celestial-phenomenon.png'" class="xp-type-image" />
+              <ds-text size="small">{{ $t("contribution.sky") }}</ds-text>
+            </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <img :src="'/img/xp-types/psychodelic-journey.png'" class="xp-type-image" />
-            <ds-text size="small">{{ $t("contribution.psycho") }}</ds-text>
-
+            <button @click='filterXPType($t("contribution.psycho"))' >
+              <img :src="'/img/xp-types/psychodelic-journey.png'" class="xp-type-image" />
+              <ds-text size="small">{{ $t("contribution.psycho") }}</ds-text>
+            </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <img :src="'/img/xp-types/near-death-experience.png'" class="xp-type-image" />
-            <ds-text size="small">{{ $t("contribution.nde") }}</ds-text>
-
+            <button @click='filterXPType($t("contribution.nde"))' >
+              <img :src="'/img/xp-types/near-death-experience.png'" class="xp-type-image" />
+              <ds-text size="small">{{ $t("contribution.nde") }}</ds-text>
+            </button>
           </ds-flex-item>
           <ds-flex-item align="center"> 
-            <img :src="'/img/xp-types/supernatural-phenomena.png'" class="xp-type-image" />
-            <ds-text size="small">{{ $t("contribution.supernatural") }}</ds-text>
-
+            <button @click='filterXPType($t("contribution.supernatural"))' >
+              <img :src="'/img/xp-types/supernatural-phenomena.png'" class="xp-type-image" />
+              <ds-text size="small">{{ $t("contribution.supernatural") }}</ds-text>
+            </button>
           </ds-flex-item>
         </ds-flex>
-    </ds-space>
-    
+     </ds-space>
       </div>
     </template>
 
@@ -307,8 +311,11 @@ export default {
       if (!e || (!e.target.closest('#my-filter') && !e.target.closest('.my-filter-button'))) {
         if (!this.showFilter) return
         this.showFilter = false
-      }
+      }    
     },
+    filterXPType(type){
+        alert(type);
+      },
     handleScroll() {
       const currentScrollPos = window.pageYOffset
       if (this.prevScrollpos > 50) {
