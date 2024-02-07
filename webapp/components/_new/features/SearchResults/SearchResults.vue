@@ -17,7 +17,7 @@
 
         <!-- map -->
 
-        <ds-grid-item  :row-span="1" column-span="fullWidth">
+        <ds-grid-item  :row-span="18" column-span="fullWidth">
           <ds-space margin-bottom="xxx-small" margin-top="xxx-small" centered>
             <map-section :showMapLegend="false"></map-section>
           </ds-space>
