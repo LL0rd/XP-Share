@@ -51,7 +51,8 @@
         class="footer"
         v-observe-visibility="(isVisible, entry) => visibilityChanged(isVisible, entry, post.id)"
       >
-        <div class="categories" v-if="categoriesActive">
+
+      <div class="categories" v-if="categoriesActive">
           <category
             v-for="category in post.categories"
             :key="category.id"
@@ -67,6 +68,10 @@
           />
         </div>
         <div v-else class="categories-placeholder"></div>
+
+      <!-- TODO Add filtering here based on xp type and show icon based on type and update title based on name -->
+        <div><img title="Dreams" class="xp-type-icon" src="img/xp-types/supernatural-phenomena.png" /></div>
+    
         <counter-icon
           icon="heart-o"
           :count="post.shoutedCount"
@@ -152,11 +157,11 @@ export default {
     const { image } = this.post
     if (!image) return
     const width = this.$el.offsetWidth
-    const height = Math.min(width / image.aspectRatio, 2000)
-    const imageElement = this.$el.querySelector('.hero-image')
-    if (imageElement) {
-      imageElement.style.height = `${height}px`
-    }
+    // const height = Math.min(width / image.aspectRatio, 2000)
+    // const imageElement = this.$el.querySelector('.hero-image')
+    // if (imageElement) {
+    //   imageElement.style.height = `${height}px`
+    // }
   },
   computed: {
     ...mapGetters({
@@ -270,6 +275,13 @@ export default {
   > .hero-image {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    max-height: 280px;
+    height: 280px;
+
+    .image {
+      height: 100%;
+      object-fit: cover;;
+    }
   }
 
   &.--blur-image > .hero-image > .image {
@@ -316,5 +328,11 @@ export default {
   .user-teaser {
     margin-bottom: $space-small;
   }
+}
+
+.xp-type-icon {
+  width: 26px;
+  opacity: 0.7;
+  margin-right: 10px;
 }
 </style>
