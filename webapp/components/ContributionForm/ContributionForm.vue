@@ -51,19 +51,6 @@
               </ds-chip>
             </ds-grid-item>
             <ds-grid-item column-span="fullWidth" :row-span="2">
-              <ds-input
-                model="subtitle"
-                :placeholder="$t('contribution.subtitle')"
-                name="subtitle"
-                autofocus
-                size="large"
-              />
-              <ds-chip size="base" :color="errors && errors.subtitle && 'danger'">
-                {{ formData.subtitle.length }}/{{ formSchema.subtitle.max }}
-                <base-icon v-if="errors && errors.subtitle" name="warning" />
-              </ds-chip>
-            </ds-grid-item>
-            <ds-grid-item column-span="fullWidth" :row-span="2">
               <ds-select
                 v-model="tempXpType"
                 :options="xpTypeOptions"
