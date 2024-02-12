@@ -243,15 +243,6 @@ export default {
         })
       })
 
-      // add search field for locations
-      this.map.addControl(
-        new MapboxGeocoder({
-          accessToken: this.$env.MAPBOX_TOKEN,
-          mapboxgl: this.mapboxgl,
-          marker: false,
-        }),
-      )
-
       // example for popup: https://docs.mapbox.com/mapbox-gl-js/example/popup-on-hover/
       // create a popup, but don't add it to the map yet
       this.markers.popup = new mapboxgl.Popup({
