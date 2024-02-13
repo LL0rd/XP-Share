@@ -109,7 +109,7 @@
       <div v-else class="mobil-header-box">
         <!-- logo, hamburger-->
         <ds-flex style="align-items: center">
-          <ds-flex-item :width="{ base: LOGOS.LOGO_HEADER_WIDTH }" style="margin-right: 20px">
+          <ds-flex-item :width="{ base: '20px' }" style="margin-right: 20px">
             <div @click="toggleMobileMenu ? toggleMobileMenuView() : ''">
               <a
                 v-if="LOGOS.LOGO_HEADER_CLICK.externalLink"
@@ -127,6 +127,23 @@
               </nuxt-link>
             </div>
           </ds-flex-item>
+
+          <!-- search field -->
+          <ds-flex-item
+            v-if="isLoggedIn"
+            id="nav-search-box"
+            class="header-search"
+            :width="{
+              base: '45%',
+              sm: '40%',
+              md: isHeaderMenu ? 'auto' : '40%',
+              lg: isHeaderMenu ? 'auto' : '50%',
+            }"
+            style="flex-shrink: 0; flex-grow: 1"
+          >
+            <search-field />
+          </ds-flex-item>
+          <!-- filter menu -->
 
           <!-- mobile hamburger menu -->
           <ds-flex-item class="mobile-hamburger-menu">
@@ -146,14 +163,6 @@
         </ds-flex>
         <!-- search, filter -->
         <ds-flex class="mobile-menu">
-          <!-- search field mobile -->
-          <ds-flex-item
-            v-if="isLoggedIn"
-            :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
-            style="padding: 20px"
-          >
-            <search-field />
-          </ds-flex-item>
           <!-- filter menu mobile -->
           <ds-flex-item
             v-if="isLoggedIn"
