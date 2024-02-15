@@ -179,6 +179,9 @@ export default {
     availableStyles() {
       // https://docs.mapbox.com/api/maps/styles/
       const availableStyles = {
+        dark: {
+          url: 'mapbox://styles/mapbox/dark-v11?optimize=true',
+        },
         outdoors: {
           url: 'mapbox://styles/mapbox/outdoors-v12?optimize=true',
         },
@@ -190,9 +193,6 @@ export default {
         satellite: {
           url: 'mapbox://styles/mapbox/satellite-streets-v12?optimize=true',
         },
-        dark: {
-          url: 'mapbox://styles/mapbox/dark-v11?optimize=true',
-        },
       }
       Object.keys(availableStyles).map((key) => {
         availableStyles[key].title = this.$t('map.styles.' + key)
@@ -202,7 +202,7 @@ export default {
     mapOptions() {
       return {
         // accessToken: this.$env.MAPBOX_TOKEN, // is set already above
-        style: !this.activeStyle ? this.availableStyles.outdoors.url : this.activeStyle,
+        style: !this.activeStyle ? this.availableStyles.dark.url : this.activeStyle,
         center: this.mapCenter,
         zoom: this.mapZoom,
         maxZoom: 22,
@@ -328,6 +328,11 @@ export default {
       })
 
       this.loadMarkersIconsAndAddMarkers()
+
+      // Disable map scrolling on mobile
+      if (this.isMobile) {
+        this.map.scrollZoom.disable()
+      }
     },
     language(map) {
       // example in mapbox-gl-language: https://github.com/mapbox/mapbox-gl-language/blob/master/index.js
