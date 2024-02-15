@@ -77,6 +77,7 @@ export default {
         alt: 'Under Maintenance',
         widthDefault: '200px',
       },
+      mobile: { path: logos.LOGO_MOBILE_PATH, alt: 'Mobile Header', widthDefault: '40px' },
     }
     return {
       logo: logosObject[this.logoType],

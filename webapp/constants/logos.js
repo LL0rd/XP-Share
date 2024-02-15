@@ -21,4 +21,5 @@ export default {
   LOGO_LOGOUT_PATH: '/img/custom/logo-squared.svg',
   LOGO_PASSWORD_RESET_PATH: '/img/custom/logo-squared.svg',
   LOGO_MAINTENACE_RESET_PATH: '/img/custom/logo-squared.svg',
+  LOGO_MOBILE_PATH: '/img/custom/logo-squared.svg',
 }

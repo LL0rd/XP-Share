@@ -109,21 +109,21 @@
       <div v-else class="mobil-header-box">
         <!-- logo, hamburger-->
         <ds-flex style="align-items: center">
-          <ds-flex-item :width="{ base: '20px' }" style="margin-right: 20px">
+          <ds-flex-item :width="{ base: '30px' }" style="margin-right: 20px">
             <div @click="toggleMobileMenu ? toggleMobileMenuView() : ''">
               <a
                 v-if="LOGOS.LOGO_HEADER_CLICK.externalLink"
                 :href="LOGOS.LOGO_HEADER_CLICK.externalLink.url"
                 :target="LOGOS.LOGO_HEADER_CLICK.externalLink.target"
               >
-                <logo logoType="header" />
+                <logo logoType="mobile" />
               </a>
               <nuxt-link
                 v-else
                 :to="LOGOS.LOGO_HEADER_CLICK.internalPath.to"
                 v-scroll-to="LOGOS.LOGO_HEADER_CLICK.internalPath.scrollTo"
               >
-                <logo logoType="header" />
+                <logo logoType="mobile" />
               </nuxt-link>
             </div>
           </ds-flex-item>
@@ -148,12 +148,8 @@
           <!-- mobile hamburger menu -->
           <ds-flex-item class="mobile-hamburger-menu">
             <client-only>
-              <!-- chat menu -->
-              <div style="display: inline-flex">
-                <chat-notification-menu />
-              </div>
               <!-- notification menu -->
-              <div style="display: inline-flex; padding-right: 20px">
+              <div style="display: inline-flex; padding-right: 2px">
                 <notification-menu />
               </div>
             </client-only>
@@ -183,6 +179,14 @@
               placement="top"
               offset="8"
             />
+          </ds-flex-item>
+          <!-- chat menu -->
+          <ds-flex-item :class="{ 'hide-mobile-menu': !toggleMobileMenu }">
+            <client-only>
+              <div @click="toggleMobileMenuView">
+                <chat-notification-menu />
+              </div>
+            </client-only>
           </ds-flex-item>
           <!-- invite button mobile -->
           <ds-flex-item
