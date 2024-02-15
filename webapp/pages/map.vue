@@ -229,18 +229,10 @@ export default {
 
       this.map.on('style.load', (value) => {
         // Triggered when `setStyle` is called.
+
         this.markers.isImagesLoaded = false
         this.markers.isSourceAndLayerAdded = false
         this.loadMarkersIconsAndAddMarkers()
-
-        // set the default atmosphere style
-        this.map.setFog({
-          color: 'rgb(186, 210, 235)', // Lower atmosphere
-          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
-          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
-          'space-color': 'rgb(11, 11, 25)', // Background color
-          'star-intensity': 0.6, // Background star brightness (default 0.35 at low zoooms )
-        })
       })
 
       // example for popup: https://docs.mapbox.com/mapbox-gl-js/example/popup-on-hover/
@@ -368,6 +360,15 @@ export default {
         this.markers.isImagesLoaded = true
         this.language(this.map)
         this.addMarkersOnCheckPrepared()
+
+        // set the default atmosphere style
+        this.map.setFog({
+          color: 'rgb(186, 210, 235)', // Lower atmosphere
+          'high-color': 'rgb(36, 92, 223)', // Upper atmosphere
+          'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
+          'space-color': 'rgb(11, 11, 25)', // Background color
+          'star-intensity': 0.6, // Background star brightness (default 0.35 at low zoooms )
+        })
       })
     },
     addMarkersOnCheckPrepared() {
