@@ -211,7 +211,7 @@ $font-weight-bold: 600;
 $line-height-large: 1.5rem;
 $line-height-base: 1.3rem;
 $line-height-small: 1.1rem;
-$line-height-smaller: 1.0rem;
+$line-height-smaller: 1rem;
 
 /**
  * @tokens Letter Spacing
@@ -285,9 +285,9 @@ $size-avatar-large: 114px;
  * @presenter Spacing
  */
 
- $size-button-large: 50px;
- $size-button-base: 36px;
- $size-button-small: 26px;
+$size-button-large: 50px;
+$size-button-base: 36px;
+$size-button-small: 26px;
 
 /**
  * @tokens Size Images
@@ -304,22 +304,22 @@ $size-image-uploader-min-height: 250px;
  * @presenter Spacing
  */
 
- $size-icon-base: 16px;
- $size-icon-large: 60px;
+$size-icon-base: 16px;
+$size-icon-large: 60px;
 
 /**
  * @tokens Shadow
  * @presenter Shadow
  */
 
-$box-shadow-x-large: 0 15px 30px 0 rgba(0,0,0,.11),0 5px 15px 0 rgba(0,0,0,.08);
-$box-shadow-large: 0 10px 20px 0 rgba(0,0,0,.11),0 3px 10px 0 rgba(0,0,0,.08);
-$box-shadow-base: 0px 12px 26px -4px rgba(0, 0, 0, .1);
-$box-shadow-small: 0px 8px 18px -2px rgba(0, 0, 0, .1);
-$box-shadow-x-small: 0px 0px 3px 0px rgba(0, 0, 0, .1);
+$box-shadow-x-large: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+$box-shadow-large: 0 10px 20px 0 rgba(0, 0, 0, 0.11), 0 3px 10px 0 rgba(0, 0, 0, 0.08);
+$box-shadow-base: 0px 12px 26px -4px rgba(0, 0, 0, 0.1);
+$box-shadow-small: 0px 8px 18px -2px rgba(0, 0, 0, 0.1);
+$box-shadow-x-small: 0px 0px 3px 0px rgba(0, 0, 0, 0.1);
 $box-shadow-active: 0 0 6px 1px rgba(20, 100, 160, 0.5);
-$box-shadow-inset: inset 0 0 20px 1px rgba(0,0,0,.15);
-$box-shadow-small-inset: inset 0 0 0 1px rgba(0,0,0,.05);
+$box-shadow-inset: inset 0 0 20px 1px rgba(0, 0, 0, 0.15);
+$box-shadow-small-inset: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 
 /**
  * @tokens Effects
@@ -344,7 +344,7 @@ $duration-xx-long: 2s;
 
 $ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 $ease-out-sharp: cubic-bezier(0.165, 0.84, 0.44, 1);
-$ease-out-bounce: cubic-bezier(.87,-.41,.19,1.44);
+$ease-out-bounce: cubic-bezier(0.87, -0.41, 0.19, 1.44);
 $ease-in: cubic-bezier(0.55, 0.085, 0.68, 0.53);
 $ease-in-sharp: cubic-bezier(0.895, 0.03, 0.685, 0.22);
 
@@ -367,11 +367,17 @@ $z-index-surface: 1;
  * @tokens Media Query
  */
 
-$media-query-x-small: (min-width: 480px);
-$media-query-small: (min-width: 600px);
-$media-query-medium: (min-width: 768px);
-$media-query-large: (min-width: 1024px);
-$media-query-x-large: (min-width: 1200px);
+$media-query-x-small: (
+  min-width: 480px,
+);
+$media-query-small: (
+  min-width: 600px,
+);
+$media-query-medium: 768px;
+$media-query-large: 1024px;
+$media-query-x-large: (
+  min-width: 1200px,
+);
 
 /**
  * @tokens Background Images
