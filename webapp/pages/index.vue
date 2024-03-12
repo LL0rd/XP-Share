@@ -110,43 +110,43 @@
         <ds-space margin-top="large">
           <ds-flex>
           <ds-flex-item align="center">
-            <button @click='filterXPType($t("contribution.dream"))' >
+            <button @click='toggleXpTypeFilter("contribution.dream")' :class="['xp-type-button', selectedXpType === 'contribution.dream' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/dreams.png'" class="xp-type-image"/>
               <ds-text size="small"> {{ $t("contribution.dream") }}</ds-text>
             </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <button @click='filterXPType($t("contribution.nature"))' >
+            <button @click='toggleXpTypeFilter("contribution.nature")' :class="['xp-type-button', selectedXpType === 'contribution.nature' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/nature-and-health.png'" class="xp-type-image" />
               <ds-text size="small">{{ $t("contribution.nature") }}</ds-text>
             </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <button @click='filterXPType($t("contribution.meditation"))' >
+            <button @click='toggleXpTypeFilter("contribution.meditation")' :class="['xp-type-button', selectedXpType === 'contribution.meditation' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/meditation.png'" class="xp-type-image" />
               <ds-text size="small">{{ $t("contribution.meditation") }}</ds-text>
             </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <button @click='filterXPType($t("contribution.sky"))' >
+            <button @click='toggleXpTypeFilter("contribution.sky")' :class="['xp-type-button', selectedXpType === 'contribution.sky' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/celestial-phenomenon.png'" class="xp-type-image" />
               <ds-text size="small">{{ $t("contribution.sky") }}</ds-text>
             </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <button @click='filterXPType($t("contribution.psycho"))' >
+            <button @click='toggleXpTypeFilter("contribution.psycho")' :class="['xp-type-button', selectedXpType === 'contribution.psycho' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/psychodelic-journey.png'" class="xp-type-image" />
               <ds-text size="small">{{ $t("contribution.psycho") }}</ds-text>
             </button>
           </ds-flex-item>
           <ds-flex-item align="center">
-            <button @click='filterXPType($t("contribution.nde"))' >
+            <button @click='toggleXpTypeFilter("contribution.nde")' :class="['xp-type-button', selectedXpType === 'contribution.nde' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/near-death-experience.png'" class="xp-type-image" />
               <ds-text size="small">{{ $t("contribution.nde") }}</ds-text>
             </button>
           </ds-flex-item>
-          <ds-flex-item align="center"> 
-            <button @click='filterXPType($t("contribution.supernatural"))' >
+          <ds-flex-item align="center">
+            <button @click='toggleXpTypeFilter("contribution.supernatural")' :class="['xp-type-button', selectedXpType === 'contribution.supernatural' ? 'xp-type-button--active' : '']">
               <img :src="'/img/xp-types/supernatural-phenomena.png'" class="xp-type-image" />
               <ds-text size="small">{{ $t("contribution.supernatural") }}</ds-text>
             </button>
@@ -248,6 +248,7 @@ export default {
       categoriesActive: this.$env.CATEGORIES_ACTIVE,
       SHOW_CONTENT_FILTER_MASONRY_GRID,
       POST_ADD_BUTTON_POSITION_TOP,
+      selectedXpType: ''
     }
   },
   computed: {
@@ -287,6 +288,11 @@ export default {
       this.resetCategories()
       this.toggleCategory(this.categoryId)
     }
+
+    if (this.selectedXpType) {
+      this.resetXpType()
+      this.toggleXpType(this.selectedXpType)
+    }
     document.addEventListener('click', this.showFilterMenu)
     window.addEventListener('scroll', this.handleScroll)
     debugger;
@@ -299,6 +305,8 @@ export default {
       resetByGroups: 'posts/TOGGLE_FILTER_BY_MY_GROUPS',
       resetCategories: 'posts/RESET_CATEGORIES',
       toggleCategory: 'posts/TOGGLE_CATEGORY',
+      resetXpType: 'posts/RESET_XP_TYPE',
+      toggleXpType: 'posts/TOGGLE_XP_TYPE',
     }),
     openFilterMenu() {
       this.showFilter = !this.showFilter
@@ -311,11 +319,18 @@ export default {
       if (!e || (!e.target.closest('#my-filter') && !e.target.closest('.my-filter-button'))) {
         if (!this.showFilter) return
         this.showFilter = false
-      }    
+      }
     },
-    filterXPType(type){
-        alert(type);
-      },
+    toggleXpTypeFilter(type) {
+      if (this.selectedXpType === type) {
+        this.selectedXpType = '';
+        this.resetXpType()
+        this.toggleXpType(this.selectedXpType)
+      } else {
+        this.selectedXpType = type;
+        this.toggleXpType(this.selectedXpType)
+      }
+    },
     handleScroll() {
       const currentScrollPos = window.pageYOffset
       if (this.prevScrollpos > 50) {
@@ -531,6 +546,14 @@ export default {
 
   .newsfeed-controls {
     margin-top: 32px;
+  }
+}
+
+.xp-type-button {
+  cursor: pointer;
+
+  &--active {
+    color: $color-primary;
   }
 }
 </style>

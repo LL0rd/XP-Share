@@ -22,6 +22,16 @@ if (CONFIG.PRODUCTION && !CONFIG.PRODUCTION_DB_CLEAN_ALLOW) {
 
 const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
+const xpTypeOptions = [
+  'contribution.dream',
+  'contribution.nature',
+  'contribution.meditation',
+  'contribution.nde',
+  'contribution.sky',
+  'contribution.psycho',
+  'contribution.supernatural',
+]
+
 /* eslint-disable no-multi-spaces */
 ;(async function () {
   let authenticatedUser = null
@@ -356,7 +366,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         groupId: 'g0',
         title: `What happend in Shanghai?`,
         content: 'A sack of rise dropped in Shanghai. Should we further investigate?',
+        subtitle: 'Subtitle',
         categoryIds: ['cat6'],
+        xpType: sample(xpTypeOptions),
       },
     })
 
@@ -368,7 +380,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         groupId: 'g0',
         title: `The man on the moon`,
         content: 'We have to further investigate about the stories of a man living on the moon.',
+        subtitle: 'Subtitle',
         categoryIds: ['cat12', 'cat16'],
+        xpType: sample(xpTypeOptions),
       },
     })
 
@@ -454,7 +468,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         groupId: 'g1',
         title: `Can we use ocelot for education?`,
         content: 'I like the concept of this school. Can we use our software in this?',
+        subtitle: 'Subtitle',
         categoryIds: ['cat8'],
+        xpType: sample(xpTypeOptions),
       },
     })
     authenticatedUser = await peterLustig.toJson()
@@ -465,7 +481,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         groupId: 'g1',
         title: `Can we push this idea out of France?`,
         content: 'This idea is too inportant to have the scope only on France.',
+        subtitle: 'Subtitle',
         categoryIds: ['cat14'],
+        xpType: sample(xpTypeOptions),
       },
     })
 
@@ -559,7 +577,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         groupId: 'g2',
         title: `I am a Noob`,
         content: 'I am new to Yoga and did not join this group so far.',
+        subtitle: 'Subtitle',
         categoryIds: ['cat4'],
+        xpType: sample(xpTypeOptions),
       },
     })
 
@@ -573,6 +593,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'e0',
         title: 'Illegaler Kindergeburtstag',
         content: 'Elli hat nächste Woche Geburtstag. Wir feiern das!',
+        subtitle: 'Subtitle',
         categoryIds: ['cat4'],
         postType: 'Event',
         eventInput: {
@@ -580,14 +601,16 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           eventVenue: 'Ellis Kinderzimmer',
           eventLocationName: 'Deutschland',
         },
+        xpType: sample(xpTypeOptions),
       },
     })
-    await mutate({
+    const result = await mutate({
       mutation: createPostMutation(),
       variables: {
         id: 'e1',
         title: 'Wir Schützen den Stuttgarter Schlossgarten',
         content: 'Kein Baum wird gefällt werden!',
+        subtitle: 'Subtitle',
         categoryIds: ['cat5'],
         postType: 'Event',
         eventInput: {
@@ -595,6 +618,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           eventVenue: 'Schlossgarten',
           eventLocationName: 'Stuttgart',
         },
+        xpType: sample(xpTypeOptions),
       },
     })
     await mutate({
@@ -611,6 +635,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           eventVenue: 'Ferienlager',
           eventLocationName: 'Bahra, Sachsen',
         },
+        xpType: sample(xpTypeOptions),
       },
     })
 
@@ -636,6 +661,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           sensitive: true,
           aspectRatio: 300 / 169,
         }),
+        xpType: sample(xpTypeOptions),
       },
     )
     const p1 = await Factory.build(
@@ -651,6 +677,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           url: faker.image.unsplash.technology(300, 1500),
           aspectRatio: 300 / 1500,
         }),
+        xpType: sample(xpTypeOptions),
       },
     )
     const p3 = await Factory.build(
@@ -662,6 +689,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {
         categoryIds: ['cat3'],
         author: huey,
+        xpType: sample(xpTypeOptions),
       },
     )
     const p4 = await Factory.build(
@@ -673,6 +701,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {
         categoryIds: ['cat4'],
         author: dewey,
+        xpType: sample(xpTypeOptions),
       },
     )
     const p5 = await Factory.build(
@@ -684,6 +713,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {
         categoryIds: ['cat5'],
         author: louie,
+        xpType: sample(xpTypeOptions),
       },
     )
     const p6 = await Factory.build(
@@ -699,6 +729,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           url: faker.image.unsplash.buildings(300, 857),
           aspectRatio: 300 / 857,
         }),
+        xpType: sample(xpTypeOptions),
       },
     )
     const p9 = await Factory.build(
@@ -710,6 +741,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {
         categoryIds: ['cat9'],
         author: huey,
+        xpType: sample(xpTypeOptions),
       },
     )
     const p10 = await Factory.build(
@@ -723,6 +755,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         image: Factory.build('image', {
           sensitive: true,
         }),
+        xpType: sample(xpTypeOptions),
       },
     )
     const p11 = await Factory.build(
@@ -738,6 +771,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           url: faker.image.unsplash.people(300, 901),
           aspectRatio: 300 / 901,
         }),
+        xpType: sample(xpTypeOptions),
       },
     )
     const p13 = await Factory.build(
@@ -749,6 +783,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {
         categoryIds: ['cat13'],
         author: bobDerBaumeister,
+        xpType: sample(xpTypeOptions),
       },
     )
     const p14 = await Factory.build(
@@ -764,6 +799,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           url: faker.image.unsplash.objects(300, 200),
           aspectRatio: 300 / 450,
         }),
+        xpType: sample(xpTypeOptions),
       },
     )
     const p15 = await Factory.build(
@@ -775,6 +811,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {
         categoryIds: ['cat15'],
         author: huey,
+        xpType: sample(xpTypeOptions),
       },
     )
 
@@ -805,7 +842,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p2',
         title: `Nature Philosophy Yoga`,
         content: hashtag1,
+        subtitle: 'Subtitle',
         categoryIds: ['cat2'],
+        xpType: sample(xpTypeOptions),
       },
     })
     await mutate({
@@ -814,7 +853,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p7',
         title: 'This is post #7',
         content: `${mention1} ${faker.lorem.paragraph()}`,
+        subtitle: 'Subtitle',
         categoryIds: ['cat7'],
+        xpType: sample(xpTypeOptions),
       },
     })
     await mutate({
@@ -824,7 +865,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         image: faker.image.unsplash.nature(),
         title: `Quantum Flow Theory explains Quantum Gravity`,
         content: hashtagAndMention1,
+        subtitle: 'Subtitle',
         categoryIds: ['cat8'],
+        xpType: sample(xpTypeOptions),
       },
     })
     await mutate({
@@ -833,6 +876,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p12',
         title: 'This is post #12',
         content: `${mention2} ${faker.lorem.paragraph()}`,
+        subtitle: 'Subtitle',
         categoryIds: ['cat12'],
       },
     })
@@ -1180,6 +1224,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.objects(),
           }),
+          xpType: sample(xpTypeOptions),
         },
       )
     }
@@ -1231,6 +1276,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.buildings(),
           }),
+          xpType: sample(xpTypeOptions),
         },
       )
     }
@@ -1282,6 +1328,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.food(),
           }),
+          xpType: sample(xpTypeOptions),
         },
       )
     }
@@ -1333,6 +1380,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.technology(),
           }),
+          xpType: sample(xpTypeOptions),
         },
       )
     }
@@ -1384,6 +1432,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.people(),
           }),
+          xpType: sample(xpTypeOptions),
         },
       )
     }
@@ -1435,6 +1484,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.nature(),
           }),
+          xpType: sample(xpTypeOptions),
         },
       )
     }

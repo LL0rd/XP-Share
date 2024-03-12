@@ -151,6 +151,9 @@ Factory.define('post')
     subtitle: 'Subtitle',
     viewedTeaserCount: 0,
   })
+  .attr('xpType', ['xpType'], (xpType) => {
+    return xpType || 'contribution.nature'
+  })
   .attr('pinned', ['pinned'], (pinned) => {
     // Convert false to null
     return pinned || null

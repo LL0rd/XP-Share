@@ -79,6 +79,17 @@ export const mutations = {
     if (isEmpty(get(filter, 'language_in'))) delete filter.language_in
     state.filter = filter
   },
+  TOGGLE_XP_TYPE(state, xpType) {
+    const filter = clone(state.filter)
+    filter.xpType = xpType
+    if (isEmpty(get(filter, 'xpType'))) delete filter.xpType
+    state.filter = filter
+  },
+  RESET_XP_TYPE(state) {
+    const filter = clone(state.filter)
+    delete filter.xpType
+    state.filter = filter
+  },
   TOGGLE_EMOTION(state, emotion) {
     const filter = clone(state.filter)
     update(filter, 'emotions_some.emotion_in', (emotions) => xor(emotions, [emotion]))
@@ -150,6 +161,9 @@ export const getters = {
   },
   filteredByEmotions(state) {
     return get(state.filter, 'emotions_some.emotion_in') || []
+  },
+  filteredXpTypes(state) {
+    return get(state.filter, 'xpTypes') || []
   },
   orderBy(state) {
     return state.order
