@@ -9,10 +9,10 @@ export const createPostMutation = () => {
       $title: String!
       $subtitle: String
       $xpType: String
-      $isPrivate: String
+      $isPrivate: Boolean
       $isAno: Boolean
       $isEncrypted: Boolean
-      $xpDate: xpDate
+      $xpDate: String
       $slug: String
       $content: String!
       $categoryIds: [ID]
@@ -91,6 +91,7 @@ export const filterPosts = () => {
         title
         content
         eventStart
+        xpType
       }
     }
   `
