@@ -31,6 +31,8 @@ export default (i18n) => {
         eventVenue
         eventLocationName
         eventIsOnline
+        isAno
+        isPrivate
         ...post
         ...postCounts
         ...tagsCategoriesAndPinned
@@ -78,6 +80,8 @@ export const filterPosts = (i18n) => {
         eventStart
         eventEnd
         eventVenue
+        isAno
+        isPrivate
         eventLocationName
         eventLocation {
           lng
@@ -126,6 +130,8 @@ export const profilePagePosts = (i18n) => {
         eventStart
         eventVenue
         eventLocationName
+        isAno
+        isPrivate
         ...post
         ...postCounts
         ...tagsCategoriesAndPinned

@@ -245,6 +245,13 @@
     "amount-comments": "{amount} comments",
     "amount-shouts": "{amount} recommendations",
     "amount-views": "{amount} views",
+    "dream": "Dream",
+    "nature": "Nature & Health",
+    "meditation": "Meditation",
+    "nde": "Near-death Experience",
+    "sky": "Sky Phenomenon",
+    "psycho": "Psychedelic Journeys",
+    "supernatural": "Supernatural Phenomena",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} topics selected"
     },
@@ -326,7 +333,9 @@
     },
     "title": "Title",
     "subtitle": "Subtitle",
-    "visibleOnlyForMembersOfGroup": "This post will only be visible to members of the “<b>{name}</b>” group."
+    "visibleOnlyForMembersOfGroup": "This post will only be visible to members of the “<b>{name}</b>” group.",
+    "anonymous": "Anonymous",
+    "private": "Private"
   },
   "delete": {
     "cancel": "Cancel",

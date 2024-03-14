@@ -78,6 +78,8 @@ export const postQuery = () => {
         id
         title
         content
+        isAno
+        isPrivate
       }
     }
   `
@@ -92,6 +94,8 @@ export const filterPosts = () => {
         content
         eventStart
         xpType
+        isAno
+        isPrivate
       }
     }
   `
@@ -109,6 +113,8 @@ export const profilePagePosts = () => {
         id
         title
         content
+        isAno
+        isPrivate
       }
     }
   `
@@ -123,6 +129,8 @@ export const searchPosts = () => {
           id
           title
           content
+          isAno
+          isPrivate
         }
       }
     }

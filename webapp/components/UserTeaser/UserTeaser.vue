@@ -129,6 +129,7 @@ export default {
 .user-teaser {
   display: flex;
   flex-wrap: nowrap;
+  align-items: center;
 
   > .profile-avatar {
     flex-shrink: 0;

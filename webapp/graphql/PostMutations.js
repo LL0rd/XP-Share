@@ -85,7 +85,6 @@ export default () => {
         $xpDate: String
         $content: String!
         $image: ImageInput
-        $xpDate: String
         $categoryIds: [ID]
         $postType: PostType
         $eventInput: _EventInput
@@ -101,7 +100,6 @@ export default () => {
           xpDate: $xpDate
           content: $content
           image: $image
-          xpDate: $xpDate
           categoryIds: $categoryIds
           postType: $postType
           eventInput: $eventInput
