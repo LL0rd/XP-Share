@@ -38,13 +38,58 @@ export default {
       params = await filterForMutedUsers(params, context)
       params = filterEventDates(params)
       params = await maintainPinnedPosts(params)
-      return neo4jgraphql(object, params, context, resolveInfo)
+
+      let result = await neo4jgraphql(object, params, context, resolveInfo, false);
+
+      if (Array.isArray(result)) {
+        result = result.filter(post => {
+          if (post.isPrivate && !(context.user.role === 'admin' || post.author.id === context.user.id)) {
+            return false;
+          }
+
+          if (post.isAno && !(context.user.role === 'admin' || post.author.id === context.user.id)) {
+            post.author = null;
+          }
+
+          return post;
+        });
+      } else if (result) {
+        if (result.isPrivate && !(context.user.role === 'admin' || result.author.id === context.user.id)) {
+          return null;
+        } else if (result.isAno && !(context.user.role === 'admin' || result.author.id === context.user.id)) {
+          result.author = null;
+        }
+      }
+
+      return result;
     },
     profilePagePosts: async (object, params, context, resolveInfo) => {
       params = await filterPostsOfMyGroups(params, context)
       params = await filterInvisiblePosts(params, context)
       params = await filterForMutedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo)
+      let result = await neo4jgraphql(object, params, context, resolveInfo, false);
+
+      if (Array.isArray(result)) {
+        result = result.filter(post => {
+          if (post.isPrivate && !(context.user.role === 'admin' || post.author.id === context.user.id)) {
+            return false;
+          }
+
+          if (post.isAno && !(context.user.role === 'admin' || post.author.id === context.user.id)) {
+            post.author = null;
+          }
+
+          return post;
+        });
+      } else if (result) {
+        if (result.isPrivate && !(context.user.role === 'admin' || result.author.id === context.user.id)) {
+          return null;
+        } else if (result.isAno && !(context.user.role === 'admin' || result.author.id === context.user.id)) {
+          result.author = null;
+        }
+      }
+
+      return result;
     },
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const { postId, data } = params

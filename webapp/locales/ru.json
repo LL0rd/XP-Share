@@ -205,7 +205,9 @@
       "cropperConfirm": "Подтвердить",
       "supportedFormats": "Вставьте изображение файла формата JPG, PNG или GIF!"
     },
-    "title": "Заголовок"
+    "title": "Заголовок",
+    "anonymous": "Аноним",
+    "private": "Частный"
   },
   "delete": {
     "cancel": "Отменить",

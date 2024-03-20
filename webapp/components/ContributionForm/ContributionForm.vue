@@ -96,6 +96,18 @@
                 </page-params-link>
               </div>
             </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="1">
+              <label for="anonymous">
+              <input id="anonymous" type="checkbox" v-model="formData.isAno" :checked="formData.isAno" />
+                {{ $t('contribution.anonymous') }}
+              </label>
+            </ds-grid-item>
+            <ds-grid-item column-span="fullWidth" :row-span="1">
+              <label for="private">
+              <input id="private" type="checkbox" v-model="formData.isPrivate" :checked="formData.isPrivate" />
+                {{ $t('contribution.private') }}
+              </label>
+            </ds-grid-item>
           </ds-grid>
 
           <!-- Eventdata -->
@@ -332,11 +344,11 @@ export default {
           {
             label: this.$t('contribution.meditation'),
             value: 'contribution.meditation'
-          }, 
+          },
           {
             label: this.$t('contribution.nde'),
             value: 'contribution.nde'
-          }, 
+          },
           {
             label: this.$t('contribution.sky'),
             value: 'contribution.sky'
@@ -344,7 +356,7 @@ export default {
           {
             label: this.$t('contribution.psycho'),
             value: 'contribution.psycho'
-          }, 
+          },
           {
             label: this.$t('contribution.supernatural'),
             value: 'contribution.supernatural'

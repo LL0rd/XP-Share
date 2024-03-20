@@ -150,6 +150,8 @@ Factory.define('post')
     clickedCount: 33,
     subtitle: 'Subtitle',
     viewedTeaserCount: 0,
+    isAno: false,
+    isPrivate: false
   })
   .attr('xpType', ['xpType'], (xpType) => {
     return xpType || 'contribution.nature'

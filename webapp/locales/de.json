@@ -333,7 +333,9 @@
     },
     "title": "Titel",
     "subtitle": "Untertitel",
-    "visibleOnlyForMembersOfGroup": "Dieser Beitrag wird nur für Mitglieder der Gruppe „<b>{name}</b>“ sichtbar sein."
+    "visibleOnlyForMembersOfGroup": "Dieser Beitrag wird nur für Mitglieder der Gruppe „<b>{name}</b>“ sichtbar sein.",
+    "anonymous": "Anonym",
+    "private": "Privat"
   },
   "delete": {
     "cancel": "Abbrechen",

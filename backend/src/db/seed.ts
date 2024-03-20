@@ -369,6 +369,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat6'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
 
@@ -383,6 +385,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat12', 'cat16'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
 
@@ -471,6 +475,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat8'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
     authenticatedUser = await peterLustig.toJson()
@@ -484,6 +490,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat14'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
 
@@ -580,6 +588,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat4'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
 
@@ -602,6 +612,8 @@ const xpTypeOptions = [
           eventLocationName: 'Deutschland',
         },
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
     const result = await mutate({
@@ -619,6 +631,8 @@ const xpTypeOptions = [
           eventLocationName: 'Stuttgart',
         },
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
     await mutate({
@@ -636,6 +650,8 @@ const xpTypeOptions = [
           eventLocationName: 'Bahra, Sachsen',
         },
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
 
@@ -662,6 +678,8 @@ const xpTypeOptions = [
           aspectRatio: 300 / 169,
         }),
         xpType: sample(xpTypeOptions),
+      isAno: false,
+      isPrivate: false
       },
     )
     const p1 = await Factory.build(
@@ -678,6 +696,8 @@ const xpTypeOptions = [
           aspectRatio: 300 / 1500,
         }),
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p3 = await Factory.build(
@@ -690,6 +710,8 @@ const xpTypeOptions = [
         categoryIds: ['cat3'],
         author: huey,
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p4 = await Factory.build(
@@ -702,6 +724,8 @@ const xpTypeOptions = [
         categoryIds: ['cat4'],
         author: dewey,
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p5 = await Factory.build(
@@ -714,6 +738,8 @@ const xpTypeOptions = [
         categoryIds: ['cat5'],
         author: louie,
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p6 = await Factory.build(
@@ -730,6 +756,8 @@ const xpTypeOptions = [
           aspectRatio: 300 / 857,
         }),
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p9 = await Factory.build(
@@ -742,6 +770,8 @@ const xpTypeOptions = [
         categoryIds: ['cat9'],
         author: huey,
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p10 = await Factory.build(
@@ -756,6 +786,8 @@ const xpTypeOptions = [
           sensitive: true,
         }),
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p11 = await Factory.build(
@@ -772,6 +804,8 @@ const xpTypeOptions = [
           aspectRatio: 300 / 901,
         }),
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p13 = await Factory.build(
@@ -784,6 +818,8 @@ const xpTypeOptions = [
         categoryIds: ['cat13'],
         author: bobDerBaumeister,
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p14 = await Factory.build(
@@ -800,6 +836,8 @@ const xpTypeOptions = [
           aspectRatio: 300 / 450,
         }),
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
     const p15 = await Factory.build(
@@ -812,6 +850,8 @@ const xpTypeOptions = [
         categoryIds: ['cat15'],
         author: huey,
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     )
 
@@ -845,6 +885,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat2'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
     await mutate({
@@ -856,6 +898,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat7'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
     await mutate({
@@ -868,6 +912,8 @@ const xpTypeOptions = [
         subtitle: 'Subtitle',
         categoryIds: ['cat8'],
         xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
     await mutate({
@@ -878,6 +924,9 @@ const xpTypeOptions = [
         content: `${mention2} ${faker.lorem.paragraph()}`,
         subtitle: 'Subtitle',
         categoryIds: ['cat12'],
+        xpType: sample(xpTypeOptions),
+        isAno: false,
+        isPrivate: false
       },
     })
 
@@ -1225,6 +1274,8 @@ const xpTypeOptions = [
             url: faker.image.unsplash.objects(),
           }),
           xpType: sample(xpTypeOptions),
+isAno: false,
+isPrivate: false
         },
       )
     }
@@ -1277,6 +1328,8 @@ const xpTypeOptions = [
             url: faker.image.unsplash.buildings(),
           }),
           xpType: sample(xpTypeOptions),
+isAno: false,
+isPrivate: false
         },
       )
     }
@@ -1329,6 +1382,8 @@ const xpTypeOptions = [
             url: faker.image.unsplash.food(),
           }),
           xpType: sample(xpTypeOptions),
+isAno: false,
+isPrivate: false
         },
       )
     }
@@ -1381,6 +1436,8 @@ const xpTypeOptions = [
             url: faker.image.unsplash.technology(),
           }),
           xpType: sample(xpTypeOptions),
+isAno: false,
+isPrivate: false
         },
       )
     }
@@ -1433,6 +1490,8 @@ const xpTypeOptions = [
             url: faker.image.unsplash.people(),
           }),
           xpType: sample(xpTypeOptions),
+isAno: false,
+isPrivate: false
         },
       )
     }
@@ -1485,6 +1544,8 @@ const xpTypeOptions = [
             url: faker.image.unsplash.nature(),
           }),
           xpType: sample(xpTypeOptions),
+isAno: false,
+isPrivate: false
         },
       )
     }

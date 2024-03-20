@@ -208,7 +208,9 @@
       "cropperConfirm": "Confirmer",
       "supportedFormats": "Insérer une image au format de fichier JPG, PNG ou GIF!"
     },
-    "title": "Titre"
+    "title": "Titre",
+    "anonymous": "Anonyme",
+    "private": "Privé"
   },
   "delete": {
     "cancel": "Annuler",

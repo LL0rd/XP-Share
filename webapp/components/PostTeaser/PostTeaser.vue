@@ -16,7 +16,7 @@
       </template>
       <client-only>
         <div class="post-user-row">
-          <user-teaser :user="post.author" :group="post.group" :date-time="post.createdAt" />
+          <user-teaser :user="post.isAno && user.role !== 'admin' ? null : post.author" :group="post.group" :date-time="post.createdAt" />
           <hc-ribbon
             :class="[isPinned ? '--pinned' : '', post.image ? 'post-ribbon-w-img' : 'post-ribbon']"
             :text="ribbonText"
@@ -58,7 +58,7 @@
             :key="category.id"
             v-tooltip="{
               content: `
-                ${$t(`contribution.category.name.${category.slug}`)}: 
+                ${$t(`contribution.category.name.${category.slug}`)}:
                 ${$t(`contribution.category.description.${category.slug}`)}
               `,
               placement: 'bottom-start',
@@ -71,7 +71,7 @@
 
       <!-- TODO Add filtering here based on xp type and show icon based on type and update title based on name -->
         <div><img title="Dreams" class="xp-type-icon" src="img/xp-types/supernatural-phenomena.png" /></div>
-    
+
         <counter-icon
           icon="heart-o"
           :count="post.shoutedCount"
