@@ -13,14 +13,14 @@ const { AWS_ENDPOINT: endpoint, AWS_REGION: region, AWS_BUCKET: Bucket, S3_CONFI
 
 const s3 = new S3Client({
   region,
-  // endpoint,
+  endpoint,
   // For local development use only.
   // Uncomment this and add localstack to point to 127.0.0.1 in hosts file
-  endpoint: {
-    protocol: 'http:',
-    hostname: 'localstack:4566',
-    path: '/',
-  },
+  // endpoint: {
+  //   protocol: 'http:',
+  //   hostname: 'localstack:4566',
+  //   path: '/',
+  // },
   credentials: {
     accessKeyId,
     secretAccessKey,
