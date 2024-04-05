@@ -3,6 +3,7 @@
 declare let Cypress: any | undefined
 export default {
   Image: typeof Cypress !== 'undefined' ? require('./Image') : require('./Image').default,
+  File: typeof Cypress !== 'undefined' ? require('./File') : require('./File').default,
   Badge: typeof Cypress !== 'undefined' ? require('./Badge') : require('./Badge').default,
   User: typeof Cypress !== 'undefined' ? require('./User') : require('./User').default,
   Group: typeof Cypress !== 'undefined' ? require('./Group') : require('./Group').default,

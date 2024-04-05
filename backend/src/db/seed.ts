@@ -678,10 +678,19 @@ const xpTypeOptions = [
           aspectRatio: 300 / 169,
         }),
         xpType: sample(xpTypeOptions),
-      isAno: false,
-      isPrivate: false
+        isAno: false,
+        isPrivate: false
       },
     )
+
+    const file = await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p0'
+      }
+    )
+
     const p1 = await Factory.build(
       'post',
       {
@@ -700,6 +709,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p1'
+      }
+    )
+
     const p3 = await Factory.build(
       'post',
       {
@@ -714,6 +732,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p3'
+      }
+    )
+
     const p4 = await Factory.build(
       'post',
       {
@@ -728,6 +755,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p4'
+      }
+    )
+
     const p5 = await Factory.build(
       'post',
       {
@@ -742,6 +778,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p5'
+      }
+    )
+
     const p6 = await Factory.build(
       'post',
       {
@@ -760,6 +805,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p6'
+      }
+    )
+
     const p9 = await Factory.build(
       'post',
       {
@@ -774,6 +828,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p9'
+      }
+    )
+
     const p10 = await Factory.build(
       'post',
       {
@@ -790,6 +853,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p10'
+      }
+    )
+
     const p11 = await Factory.build(
       'post',
       {
@@ -808,6 +880,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p11'
+      }
+    )
+
     const p13 = await Factory.build(
       'post',
       {
@@ -822,6 +903,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p13'
+      }
+    )
+
     const p14 = await Factory.build(
       'post',
       {
@@ -840,6 +930,15 @@ const xpTypeOptions = [
         isPrivate: false
       },
     )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p14'
+      }
+    )
+
     const p15 = await Factory.build(
       'post',
       {
@@ -853,6 +952,14 @@ const xpTypeOptions = [
         isAno: false,
         isPrivate: false
       },
+    )
+
+    await Factory.build(
+      'file',
+      {},
+      {
+        postId: 'p15'
+      }
     )
 
     // invite code
@@ -1264,7 +1371,7 @@ const xpTypeOptions = [
 
     // Jenny posts
     for (let i = 0; i < 30; i++) {
-      await Factory.build(
+      const post = await Factory.build(
         'post',
         { content: `Jenny ${faker.lorem.sentence()}` },
         {
@@ -1274,15 +1381,23 @@ const xpTypeOptions = [
             url: faker.image.unsplash.objects(),
           }),
           xpType: sample(xpTypeOptions),
-isAno: false,
-isPrivate: false
+          isAno: false,
+          isPrivate: false
         },
+      )
+
+      await Factory.build(
+        'file',
+        {},
+        {
+          postId: post._properties.get('id')
+        }
       )
     }
 
     // comments on p2 jenny
     for (let i = 0; i < 6; i++) {
-      await Factory.build(
+      const comment = await Factory.build(
         'comment',
         {},
         {
@@ -1291,6 +1406,7 @@ isPrivate: false
         },
       )
     }
+
 
     // comments on p15 jenny
     for (let i = 0; i < 4; i++) {
@@ -1318,7 +1434,7 @@ isPrivate: false
 
     // Posts Peter Lustig
     for (let i = 0; i < 21; i++) {
-      await Factory.build(
+      const post = await Factory.build(
         'post',
         {},
         {
@@ -1328,9 +1444,17 @@ isPrivate: false
             url: faker.image.unsplash.buildings(),
           }),
           xpType: sample(xpTypeOptions),
-isAno: false,
-isPrivate: false
+          isAno: false,
+          isPrivate: false
         },
+      )
+
+      await Factory.build(
+        'file',
+        {},
+        {
+          postId: post._properties.get('id')
+        }
       )
     }
 
@@ -1372,7 +1496,7 @@ isPrivate: false
 
     // Posts dewey
     for (let i = 0; i < 11; i++) {
-      await Factory.build(
+      const post = await Factory.build(
         'post',
         {},
         {
@@ -1382,9 +1506,17 @@ isPrivate: false
             url: faker.image.unsplash.food(),
           }),
           xpType: sample(xpTypeOptions),
-isAno: false,
-isPrivate: false
+          isAno: false,
+          isPrivate: false
         },
+      )
+
+      await Factory.build(
+        'file',
+        {},
+        {
+          postId: post._properties.get('id')
+        }
       )
     }
 
@@ -1426,7 +1558,7 @@ isPrivate: false
 
     // Posts louie
     for (let i = 0; i < 16; i++) {
-      await Factory.build(
+      const post = await Factory.build(
         'post',
         {},
         {
@@ -1436,9 +1568,17 @@ isPrivate: false
             url: faker.image.unsplash.technology(),
           }),
           xpType: sample(xpTypeOptions),
-isAno: false,
-isPrivate: false
+          isAno: false,
+          isPrivate: false
         },
+      )
+
+      await Factory.build(
+        'file',
+        {},
+        {
+          postId: post._properties.get('id')
+        }
       )
     }
 
@@ -1480,7 +1620,7 @@ isPrivate: false
 
     // Posts Bob der Baumeister
     for (let i = 0; i < 45; i++) {
-      await Factory.build(
+      const post = await Factory.build(
         'post',
         {},
         {
@@ -1490,9 +1630,17 @@ isPrivate: false
             url: faker.image.unsplash.people(),
           }),
           xpType: sample(xpTypeOptions),
-isAno: false,
-isPrivate: false
+          isAno: false,
+          isPrivate: false
         },
+      )
+
+      await Factory.build(
+        'file',
+        {},
+        {
+          postId: post._properties.get('id')
+        }
       )
     }
 
@@ -1534,7 +1682,7 @@ isPrivate: false
 
     // Posts huey
     for (let i = 0; i < 8; i++) {
-      await Factory.build(
+      const post = await Factory.build(
         'post',
         {},
         {
@@ -1544,9 +1692,17 @@ isPrivate: false
             url: faker.image.unsplash.nature(),
           }),
           xpType: sample(xpTypeOptions),
-isAno: false,
-isPrivate: false
+          isAno: false,
+          isPrivate: false
         },
+      )
+
+      await Factory.build(
+        'file',
+        {},
+        {
+          postId: post._properties.get('id')
+        }
       )
     }
 

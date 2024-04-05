@@ -1,0 +1,20 @@
+type File {
+  id: ID!,
+  url: String!,
+  alt: String,
+  name: String,
+  type: String,
+  post: Post @relation(name: "FILES", direction: "OUT")
+  createdAt: String
+}
+
+input FileInput {
+  upload: Upload,
+  alt: String,
+  name: String,
+  type: String
+}
+
+type Mutation {
+  DeleteFile(id: ID!): File
+}

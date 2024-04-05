@@ -134,6 +134,9 @@ type Post {
   content: String!
   contentExcerpt: String
   image: Image @relation(name: "HERO_IMAGE", direction: "OUT")
+  drawing: Drawing @relation(name: "DRAWING", direction: "OUT")
+  audio: Drawing @relation(name: "AUDIO", direction: "OUT")
+  files: [File] @relation(name: "FILES", direction: "IN")
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
@@ -182,7 +185,7 @@ type Post {
     @cypher(
       statement: "MATCH (this)<-[:VIEWED_TEASER]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1"
     )
-  
+
   emotions: [EMOTED]
   emotionsCount: Int!
     @cypher(statement: "MATCH (this)<-[emoted:EMOTED]-(:User) RETURN COUNT(DISTINCT emoted)")
@@ -232,6 +235,9 @@ type Mutation {
     groupId: ID
     postType: PostType = Article
     eventInput: _EventInput
+    files: [FileInput]
+    drawing: Upload
+    audio: Upload
   ): Post
   UpdatePost(
     id: ID!
@@ -251,6 +257,9 @@ type Mutation {
     categoryIds: [ID]
     postType: PostType
     eventInput: _EventInput
+    files: [FileInput]
+    drawing: Upload
+    audio: Upload
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED

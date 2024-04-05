@@ -126,6 +126,7 @@ export default {
     { src: '~/plugins/izi-toast.js', ssr: false },
     { src: '~/plugins/vue-filters.js' },
     { src: '~/plugins/vue-infinite-loading.js', ssr: false },
+    { src: '~/plugins/vue-signature.js', ssr: false, mode: 'client' },
     { src: '~/plugins/vue-observe-visibility.js', ssr: false },
     { src: '~/plugins/v-mapbox.js', mode: 'client' },
     { src: '~/plugins/vue-advanced-chat.js', mode: 'client' },

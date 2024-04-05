@@ -8,6 +8,7 @@ import {
   locationFragment,
   badgesFragment,
   tagsCategoriesAndPinnedFragment,
+  fileFragment
 } from './Fragments'
 
 export default (i18n) => {
@@ -21,6 +22,7 @@ export default (i18n) => {
     ${postCountsFragment}
     ${tagsCategoriesAndPinnedFragment}
     ${commentFragment}
+    ${fileFragment}
 
     query Post($id: ID!) {
       Post(id: $id) {
@@ -51,6 +53,9 @@ export default (i18n) => {
             ...location
             ...badges
           }
+        }
+        files {
+          ...file
         }
         group {
           id
