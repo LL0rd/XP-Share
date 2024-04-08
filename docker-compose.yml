@@ -8,6 +8,30 @@ version: "3.4"
 services:
 
   ########################################################
+  # LOCALSTACK ###########################################
+  ########################################################
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    networks:
+      - external-net
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=eu-central-1
+      - SERVICES=s3
+      - LOCALSTACK_HOST=localstack:4566
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./localstack.sh:/etc/localstack/init/ready.d/localstack.sh
+
+  ########################################################
   # WEBAPP ###############################################
   ########################################################
   webapp:
@@ -54,6 +78,7 @@ services:
       - internal-net
     depends_on:
       - neo4j
+      - localstack
     ports:
       - 4000:4000
     volumes:

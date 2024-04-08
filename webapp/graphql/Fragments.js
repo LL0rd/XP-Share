@@ -63,6 +63,12 @@ export const postFragment = gql`
       aspectRatio
       type
     }
+    drawing {
+      url
+    }
+    audio {
+      url
+    }
     author {
       ...user
     }
@@ -134,5 +140,16 @@ export const commentFragment = gql`
     deleted
     content
     contentExcerpt
+  }
+`
+
+export const fileFragment = gql`
+  fragment file on File {
+    id
+    alt
+    type
+    url
+    name
+    createdAt
   }
 `

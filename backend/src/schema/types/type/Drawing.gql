@@ -1,0 +1,4 @@
+type Drawing {
+  url: ID!,
+  createdAt: String
+}

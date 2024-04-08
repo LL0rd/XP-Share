@@ -96,6 +96,75 @@
                 </page-params-link>
               </div>
             </ds-grid-item>
+
+            <div class="files-uploader">
+              <div class="files-uploader__files">
+                <div v-for="(file, index) in formData.files" class="files-uploader__files__item">
+                  <p><base-icon name="paperclip" /> <span class="files-uploader__files__item__text">{{ file.name }}</span></p>
+                  <base-button
+                    class="delete-image-button"
+                    icon="trash"
+                    circle
+                    danger
+                    filled
+                    data-test="delete-button"
+                    :title="$t('actions.delete')"
+                    @click.stop="deleteFile(index)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <h3>
+              {{ $t('fileAttachments') }}
+            </h3>
+            <multiple-file-uploader
+              @selected="addFile"
+            />
+
+            <h3 style="margin-top: 40px">
+              {{ $t('audio.recordings') }}
+            </h3>
+            <div v-if="formData.audio" class="audio-uploader">
+              <audio :src="formData.audio.url" controls />
+              <base-button
+                class="delete-image-button"
+                icon="trash"
+                circle
+                danger
+                filled
+                data-test="delete-button"
+                :title="$t('actions.delete')"
+                @click.prevent="deleteAudio"
+              />
+            </div>
+            <div v-else class="audio-uploader">
+              <audio-uploader @selected="addAudio" />
+            </div>
+
+            <h3 v-if="formData.drawing" class="label">
+              {{ $t('whiteBoard.label') }}
+            </h3>
+            <div v-if="formData.drawing" class="delete-drawing">
+              <img
+                :src="formData.drawing.url"
+                :class="['delete-drawing-image']"
+              />
+              <base-button
+                class="delete-drawing-button"
+                icon="trash"
+                circle
+                danger
+                filled
+                data-test="delete-button"
+                :title="$t('actions.delete')"
+                @click.prevent="deleteDrawing"
+              />
+            </div>
+            <white-board-input v-else @drawing="handleDrawing" />
+            <h3 style="margin-top: 40px">
+              {{ $t('privacy') }}
+            </h3>
             <ds-grid-item column-span="fullWidth" :row-span="1">
               <label for="anonymous">
               <input id="anonymous" type="checkbox" v-model="formData.isAno" :checked="formData.isAno" />
@@ -251,10 +320,15 @@ import Editor from '~/components/Editor/Editor'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import ImageUploader from '~/components/Uploader/ImageUploader'
+import MultipleFileUploader from '~/components/Uploader/MultipleFileUploader'
 import links from '~/constants/links.js'
 import PageParamsLink from '~/components/_new/features/PageParamsLink/PageParamsLink.vue'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/scss/index.scss'
+import { mapMutations } from 'vuex'
+import FileMutations from '~/graphql/FileMutations'
+import WhiteBoardInput from '~/components/WhiteBoardInput/WhiteBoardInput'
+import AudioUploader from '~/components/Uploader/AudioUploader'
 
 export default {
   components: {
@@ -263,6 +337,9 @@ export default {
     PageParamsLink,
     CategoriesSelect,
     DatePicker,
+    MultipleFileUploader,
+    WhiteBoardInput,
+    AudioUploader
   },
   props: {
     contribution: {
@@ -290,6 +367,7 @@ export default {
       xpDate,
       content,
       image,
+      files,
       categories,
       eventStart,
       eventEnd,
@@ -297,6 +375,8 @@ export default {
       eventVenue,
       eventIsOnline,
       eventLocation,
+      drawing,
+      audio
     } = this.contribution
     const {
       sensitive: imageBlurred = false,
@@ -316,6 +396,9 @@ export default {
         xpDate: xpDate || '',
         content: content || '',
         image: image || null,
+        drawing: drawing || null,
+        audio: audio || null,
+        files: files || [],
         imageAspectRatio,
         imageType,
         imageBlurred,
@@ -331,6 +414,9 @@ export default {
       users: [],
       hashtags: [],
       imageUpload: null,
+      fileUploads: [],
+      drawingUpload: null,
+      audioUpload: null,
       tempXpType: null,
       xpTypeOptions: [
           {
@@ -484,6 +570,9 @@ export default {
     },
     submit() {
       let image = null
+      let drawing = null
+      let audio = null
+      let files = []
 
       const { title, subtitle, content, categoryIds, xpType, isPrivate, isAno, isEncrypted, xpDate } =
         this.formData
@@ -497,6 +586,26 @@ export default {
           image.type = this.formData.imageType
         }
       }
+
+      if (!this.formData.drawing && this.drawingUpload) {
+        drawing = this.drawingUpload
+      }
+
+      if (!this.formData.audio && this.audioUpload) {
+        audio = this.audioUpload
+      }
+
+      if (this.fileUploads.length) {
+        this.fileUploads.forEach((file, index) => {
+          files[index] = {}
+          files[index].upload = file[0]
+          files[index].type = file[0].type
+          files[index].name = file[0].name
+          files[index].alt = file[0].name
+        })
+      }
+      console.log(((!this.formData.audio || this.audioUpload) ? audio : 'test' ))
+
       this.loading = true
 
       this.$apollo
@@ -514,6 +623,9 @@ export default {
             categoryIds,
             id: this.contribution.id || null,
             image,
+            files,
+            ...((!this.formData.drawing || this.drawingUpload) && { drawing } ),
+            ...((!this.formData.audio || this.audioUpload) && { audio } ),
             groupId: this.groupId,
             postType: !this.createEvent ? 'Article' : 'Event',
             eventInput: this.eventInput,
@@ -530,6 +642,7 @@ export default {
           })
         })
         .catch((err) => {
+          console.log(err, err.message)
           this.$toast.error(err.message)
           this.loading = false
         })
@@ -563,12 +676,115 @@ export default {
         this.imageUpload = file
       }
     },
+    deleteDrawing() {
+      if (this.formData.drawing) {
+        this.formData.drawing = null
+      }
+    },
+    deleteAudio() {
+      if (this.formData.audio) {
+        this.formData.audio = null
+      }
+    },
+    addFile(files) {
+      files.forEach((file,index) => {
+        this.fileUploads[index] = file
+      })
+    },
+    addAudio(file) {
+      // const reader = new FileReader();
+      // reader.readAsDataURL(file);
+      this.audioUpload = file
+    },
     addImageAspectRatio(aspectRatio) {
       this.formData.imageAspectRatio = aspectRatio
     },
     addImageType(imageType) {
       this.formData.imageType = imageType
     },
+    ...mapMutations({
+      commitModalData: 'modal/SET_OPEN',
+    }),
+    modalData(item) {
+      return {
+        name: 'confirm',
+        data: {
+          type: 'File',
+          resource: item,
+          modalData: {
+            titleIdent: 'delete.file.title',
+            messageIdent: 'delete.file.message',
+            messageParams: {
+              name: item.name,
+            },
+            buttons: {
+              confirm: {
+                danger: true,
+                icon: 'trash',
+                textIdent: 'delete.submit',
+                callback: () => {
+                  this.deleteFileCallback(item.id)
+                },
+              },
+              cancel: {
+                icon: 'close',
+                textIdent: 'delete.cancel',
+                callback: () => {},
+              },
+            },
+          },
+        }
+      }
+    },
+    async deleteFileCallback(id) {
+      try {
+        const {
+          data: { DeleteFile },
+        } = await this.$apollo.mutate({
+          mutation: FileMutations(this.$i18n).DeleteFile,
+          variables: { id },
+        })
+        this.$toast.success(this.$t('delete.file.success'))
+        this.formData.files = this.formData.files.filter((file) => !file.id || (file.id && file.id !== id))
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async openModal(data) {
+      await this.commitModalData(this.modalData(data))
+    },
+    async deleteFile(index) {
+      if(this.formData.files[index].id) {
+        await this.openModal(this.formData.files[index])
+      } else {
+        this.formData.files.splice(index, 1)
+      }
+    },
+    handleDrawing(base64Image) {
+      let image;
+      const base64WithoutPrefix = base64Image.replace(/^data:[^;]+;base64,/, '');
+      const byteCharacters = atob(base64WithoutPrefix);
+      const byteArrays = [];
+
+      for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+          const slice = byteCharacters.slice(offset, offset + 512);
+
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+              byteNumbers[i] = slice.charCodeAt(i);
+          }
+
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+      }
+
+      const blob = new Blob(byteArrays, { type: 'image/png' });
+      const upload = new File([blob], 'drawing.png', { type: 'image/png' });
+
+      const reader = new FileReader();
+      reader.readAsDataURL(upload);
+      this.drawingUpload = upload;
+    }
   },
   apollo: {
     User: {
@@ -772,6 +988,91 @@ export default {
       margin: $space-xx-small 0 $space-base;
       cursor: default;
     }
+  }
+}
+
+.ds-grid {
+  grid-auto-rows: auto !important;
+}
+
+.files-uploader {
+  grid-column: 1 / -1; /* Span all columns */
+  align-self: auto;
+  margin-top: 60px;
+  position: relative;
+
+  &__files {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+      border-radius: 4px;
+      margin-bottom: 4px;
+      width: 100%;
+      padding: 8px 20px;
+      border: 2px solid #efeef1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > p {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        width: 80%;
+
+        & svg {
+          margin-right: 8px;
+        }
+      }
+
+      &__text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.delete-drawing {
+  grid-column: 1 / -1; /* Span all columns */
+  align-self: auto;
+  position: relative;
+  background: #efeef1;
+}
+
+.delete-drawing-button {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+}
+
+.delete-drawing-image {
+  width: 100%;
+  height: auto;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.label {
+  width: 100%;
+  background: #fff;
+}
+
+.audio-uploader {
+  width: 100%;
+  display: flex;
+  grid-column: 1 / -1;
+  align-self: auto;
+  justify-content: center;
+  align-items: center;
+
+  & > * + * {
+    margin-left: 8px;
   }
 }
 </style>

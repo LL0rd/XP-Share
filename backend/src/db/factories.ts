@@ -218,6 +218,28 @@ Factory.define('comment')
     return comment
   })
 
+Factory.define('file')
+  .option('postId', null)
+  .option('post', ['postId'], (postId) => {
+    if (postId) return neode.find('Post', postId)
+    return Factory.build('post')
+  })
+  .attrs({
+    id: uuid,
+    url: faker.internet.url(),
+    alt: faker.lorem.sentence,
+    type: 'application/pdf',
+    name: faker.system.commonFileName('pdf')
+  })
+  .after(async (buildObject, options) => {
+    const [file, post] = await Promise.all([
+      neode.create('File', buildObject),
+      options.post,
+    ])
+    await Promise.all([file.relateTo(post, 'post')])
+    return file
+  })
+
 Factory.define('donations')
   .attr('id', uuid)
   .attr('showDonations', true)

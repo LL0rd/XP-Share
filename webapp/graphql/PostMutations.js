@@ -15,7 +15,10 @@ export default () => {
         $slug: String
         $content: String!
         $categoryIds: [ID]
+        $files: [FileInput]
         $image: ImageInput
+        $drawing: Upload
+        $audio: Upload
         $groupId: ID
         $postType: PostType
         $eventInput: _EventInput
@@ -33,6 +36,9 @@ export default () => {
           content: $content
           categoryIds: $categoryIds
           image: $image
+          files: $files
+          audio: $audio
+          drawing: $drawing
           groupId: $groupId
           postType: $postType
           eventInput: $eventInput
@@ -52,6 +58,12 @@ export default () => {
           image {
             url
             sensitive
+          }
+          drawing {
+            url
+          }
+          audio {
+            url
           }
           disabled
           deleted
@@ -88,6 +100,9 @@ export default () => {
         $categoryIds: [ID]
         $postType: PostType
         $eventInput: _EventInput
+        $files: [FileInput]
+        $drawing: Upload
+        $audio: Upload
       ) {
         UpdatePost(
           id: $id
@@ -103,6 +118,9 @@ export default () => {
           categoryIds: $categoryIds
           postType: $postType
           eventInput: $eventInput
+          files: $files
+          drawing: $drawing
+          audio: $audio
         ) {
           id
           title
@@ -120,6 +138,12 @@ export default () => {
             url
             sensitive
             aspectRatio
+          }
+          drawing {
+            url
+          }
+          audio {
+            url
           }
           pinnedBy {
             id

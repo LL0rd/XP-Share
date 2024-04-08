@@ -351,6 +351,12 @@
       "title": "Delete Post",
       "type": "Contribution"
     },
+    "file": {
+      "message": "Do you really want to delete the file \"<b>{name}</b>\"?",
+      "success": "File successfully deleted!",
+      "title": "Delete File",
+      "type": "File"
+    },
     "submit": "Delete"
   },
   "disable": {
@@ -1127,5 +1133,16 @@
     "newTermsAndConditions": "New Terms and Conditions",
     "termsAndConditionsNewConfirm": "I have read and agree to the new terms of conditions.",
     "termsAndConditionsNewConfirmText": "Please read the new terms of use now!"
+  },
+  "whiteBoard": {
+    "label": "Drawing"
+  },
+  "privacy": "Privacy",
+  "fileAttachments": "File Attachments",
+  "audio": {
+    "recordings": "Audio Recordings",
+    "browse": "Browse For Audio",
+    "startRecord": "Record Audio",
+    "stopRecord": "Stop Recording"
   }
 }

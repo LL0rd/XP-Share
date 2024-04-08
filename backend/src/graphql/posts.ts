@@ -16,6 +16,9 @@ export const createPostMutation = () => {
       $slug: String
       $content: String!
       $categoryIds: [ID]
+      $files: [FileInput]
+      $drawing: Upload
+      $audio: Upload
       $groupId: ID
       $postType: PostType
       $eventInput: _EventInput
@@ -34,6 +37,9 @@ export const createPostMutation = () => {
         categoryIds: $categoryIds
         groupId: $groupId
         postType: $postType
+        files: $files
+        drawing: $drawing
+        audio: $audio
         eventInput: $eventInput
       ) {
         id
@@ -54,6 +60,18 @@ export const createPostMutation = () => {
         }
         categories {
           id
+        }
+        files {
+          id
+          url
+          name
+          type
+        }
+        drawing {
+          url
+        }
+        audio {
+          url
         }
         eventStart
         eventEnd

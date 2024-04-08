@@ -347,6 +347,33 @@ const isAuthor = rule({
   }
 })
 
+const isUploader = rule({
+  cache: 'no_cache',
+})(async (_parent, args, { user, driver }) => {
+  if (!user) return false;
+
+  const { id: fileId } = args;
+  const session = driver.session();
+
+  const uploaderReadTxPromise = session.readTransaction(async (transaction) => {
+    const uploaderTransactionResponse = await transaction.run(
+      `
+        MATCH (user {id: $userId})-[:WROTE]->(post)<-[:FILES]-(file {id: $fileId})
+        RETURN post
+      `,
+      { userId: user.id, fileId }
+    );
+    return uploaderTransactionResponse.records.map((record) => record.get('post'));
+  });
+
+  try {
+    const [post] = await uploaderReadTxPromise;
+    return !!post;
+  } finally {
+    session.close();
+  }
+});
+
 const isDeletingOwnAccount = rule({
   cache: 'no_cache',
 })(async (parent, args, context, _info) => {
@@ -442,6 +469,7 @@ export default shield(
       CreateComment: and(isAuthenticated, canCommentPost),
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,
+      DeleteFile: and(isAuthenticated, isUploader),
       DeleteUser: or(isDeletingOwnAccount, isAdmin),
       requestPasswordReset: allow,
       resetPassword: allow,

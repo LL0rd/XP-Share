@@ -75,6 +75,22 @@
             <ds-space margin-bottom="small" />
             <!-- content -->
             <content-viewer class="content hyphenate-text" :content="post.content" />
+            <div v-if="post && post.audio">
+              <audio :src="post.audio.url" controls />
+            </div>
+            <div v-if="post && post.drawing" class="post-drawing">
+              <img :src="post.drawing.url" class="post-drawing__image"/>
+            </div>
+            <div class="files-uploader">
+              <div class="files-uploader__files">
+                <a target="_blank" :href="file.url" v-for="(file, index) in post.files">
+                  <base-button class="files-uploader__files__item">
+                    <p><base-icon name="paperclip" /> <span class="files-uploader__files__item__text">{{ file.name }}</span></p>
+                    <base-icon name="download" />
+                  </base-button>
+                </a>
+              </div>
+            </div>
             <!-- categories -->
             <div v-if="categoriesActive" class="categories">
               <ds-space margin="xx-large" />
@@ -440,6 +456,55 @@ export default {
 @media only screen and (max-width: 960px) {
   .shout-button {
     float: left;
+  }
+}
+
+.files-uploader {
+  grid-column: 1 / -1; /* Span all columns */
+  align-self: auto;
+  margin-top: 60px;
+
+  &__files {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+      border-radius: 4px;
+      margin-bottom: 4px;
+      width: 100%;
+      padding: 8px 20px;
+      border: 2px solid #efeef1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > p {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        width: 80%;
+
+        & svg {
+          margin-right: 8px;
+        }
+      }
+
+      &__text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.post-drawing {
+  width: 100%;
+  height: auto;
+
+  &__image {
+    width: 100%;
   }
 }
 </style>

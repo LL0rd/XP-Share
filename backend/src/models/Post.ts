@@ -10,6 +10,18 @@ export default {
     target: 'Image',
     direction: 'out',
   },
+  drawing: {
+    type: 'relationship',
+    relationship: 'DRAWING',
+    target: 'Drawing',
+    direction: 'out',
+  },
+  audio: {
+    type: 'relationship',
+    relationship: 'AUDIO',
+    target: 'Drawing',
+    direction: 'out',
+  },
   author: {
     type: 'relationship',
     relationship: 'WROTE',
@@ -56,6 +68,15 @@ export default {
     properties: {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
       updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
+  files: {
+    type: 'relationship',
+    relationship: 'FILES',
+    target: 'File',
+    direction: 'in',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
   pinned: { type: 'boolean', default: null, valid: [null, true] },

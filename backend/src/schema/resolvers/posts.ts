@@ -3,6 +3,8 @@ import { neo4jgraphql } from 'neo4j-graphql-js'
 import { isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import { mergeImage, deleteImage } from './images/images'
+import { mergeDrawing, deleteDrawing } from './images/drawings'
+import { uploadFile, deleteFile } from './files/files'
 import Resolver from './helpers/Resolver'
 import { filterForMutedUsers } from './helpers/filterForMutedUsers'
 import { filterInvisiblePosts } from './helpers/filterInvisiblePosts'
@@ -136,16 +138,32 @@ export default {
   },
   Mutation: {
     CreatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds, groupId } = params
-      const { image: imageInput } = params
+
+      console.log(params.audio)
+      const {
+        categoryIds,
+        groupId,
+        image: imageInput,
+        files: filesInput,
+        drawing: drawingInput,
+        audio: audioInput
+      } = params
 
       const locationName = validateEventParams(params)
 
       delete params.categoryIds
       delete params.image
       delete params.groupId
+      delete params.files
+      delete params.drawing
+      delete params.audio
+
+      console.log(audioInput)
+
       params.id = params.id || uuid()
+
       const session = context.driver.session()
+
       const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         let groupCypher = ''
         if (groupId) {
@@ -199,6 +217,52 @@ export default {
         if (imageInput) {
           await mergeImage(post, 'HERO_IMAGE', imageInput, { transaction })
         }
+
+        if (drawingInput) {
+          await mergeDrawing(post, 'DRAWING', drawingInput, { transaction })
+        }
+
+        if (audioInput) {
+          await mergeDrawing(post, 'AUDIO', audioInput, { transaction })
+        }
+
+        if(filesInput && filesInput.length) {
+          const createFilesAndRelationPromises = filesInput.map(async fileInput => {
+            const { name, type, alt, upload } = fileInput
+            const url = await uploadFile(upload);
+
+            const file = await transaction.run(
+              `
+                MATCH (post:Post {id: $postId})
+                WITH post
+                CREATE (file:File {
+                  id: $id,
+                  url: $url,
+                  name: $name,
+                  type: $type,
+                  alt: $alt
+                })
+                SET file.createdAt = toString(datetime())
+                MERGE (post)<-[:FILES]-(file)
+              `,
+              {
+                postId: post.id,
+                id: uuid(),
+                url,
+                name,
+                type,
+                alt
+              }
+            );
+
+            const [createdFile] = file.records.map(record => record.get('file'))
+
+            return createdFile;
+          });
+
+          await Promise.all(createFilesAndRelationPromises);
+        }
+
         return post
       })
       try {
@@ -216,13 +280,23 @@ export default {
       }
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
-      const { categoryIds } = params
-      const { image: imageInput } = params
+      const {
+        categoryIds,
+        image: imageInput,
+        files: filesInput,
+        drawing: drawingInput,
+        audio: audioInput
+      } = params
 
       const locationName = validateEventParams(params)
+      console.log(audioInput)
 
+      delete params.drawing
       delete params.categoryIds
       delete params.image
+      delete params.files
+      delete params.audio
+
       const session = context.driver.session()
       let updatePostCypher = `
         MATCH (post:Post {id: $params.id})
@@ -269,6 +343,46 @@ export default {
           )
           const [post] = updatePostTransactionResponse.records.map((record) => record.get('post'))
           await mergeImage(post, 'HERO_IMAGE', imageInput, { transaction })
+          await mergeDrawing(post, 'DRAWING', drawingInput, { transaction })
+          await mergeDrawing(post, 'AUDIO', audioInput, { transaction })
+
+          if(filesInput && filesInput.length) {
+            const createFilesAndRelationPromises = filesInput.map(async fileInput => {
+              const { name, type, alt, upload } = fileInput
+              const url = await uploadFile(upload);
+
+              const file = await transaction.run(
+                `
+                  MATCH (post:Post {id: $postId})
+                  WITH post
+                  CREATE (file:File {
+                    id: $id,
+                    url: $url,
+                    name: $name,
+                    type: $type,
+                    alt: $alt
+                  })
+                  SET file.createdAt = toString(datetime())
+                  MERGE (post)<-[:FILES]-(file)
+                `,
+                {
+                  postId: post.id,
+                  id: uuid(),
+                  url,
+                  name,
+                  type,
+                  alt
+                }
+              );
+
+              const [createdFile] = file.records.map(record => record.get('file'))
+
+              return createdFile;
+            });
+
+            await Promise.all(createFilesAndRelationPromises);
+          }
+
           return post
         })
         const post = await writeTxResultPromise
@@ -288,17 +402,28 @@ export default {
           `
             MATCH (post:Post {id: $postId})
             OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
+            OPTIONAL MATCH (post)<-[:FILES]-(file:File)
             SET post.deleted        = TRUE
             SET post.content        = 'UNAVAILABLE'
             SET post.contentExcerpt = 'UNAVAILABLE'
             SET post.title          = 'UNAVAILABLE'
             SET comment.deleted     = TRUE
-            RETURN post {.*}
+            WITH post, COLLECT(file) as files
+            RETURN post {.*}, files
           `,
           { postId: args.id },
         )
-        const [post] = deletePostTransactionResponse.records.map((record) => record.get('post'))
+        const records = deletePostTransactionResponse.records;
+        const [post] = records.map(record => record.get('post'));
+        const [files] = records.map(record => record.get('files'));
         await deleteImage(post, 'HERO_IMAGE', { transaction })
+        await deleteDrawing(post, 'DRAWING', { transaction })
+        await deleteDrawing(post, 'AUDIO', { transaction })
+
+        const deleteFilePromises = files.map(async (file) => {
+          await deleteFile(file);
+        });
+        await Promise.all(deleteFilePromises);
         return post
       })
       try {
@@ -483,11 +608,14 @@ export default {
         comments: '<-[:COMMENTS]-(related:Comment)',
         shoutedBy: '<-[:SHOUTED]-(related:User)',
         emotions: '<-[related:EMOTED]',
+        files: '<-[:FILES]-(related:File)'
       },
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
         image: '-[:HERO_IMAGE]->(related:Image)',
+        drawing: '-[:DRAWING]->(related:Drawing)',
+        audio: '-[:AUDIO]->(related:Drawing)',
         group: '-[:IN]->(related:Group)',
         eventLocation: '-[:IS_IN]->(related:Location)',
       },
