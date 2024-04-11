@@ -138,8 +138,6 @@ export default {
   },
   Mutation: {
     CreatePost: async (_parent, params, context, _resolveInfo) => {
-
-      console.log(params.audio)
       const {
         categoryIds,
         groupId,
@@ -157,8 +155,6 @@ export default {
       delete params.files
       delete params.drawing
       delete params.audio
-
-      console.log(audioInput)
 
       params.id = params.id || uuid()
 
@@ -289,7 +285,6 @@ export default {
       } = params
 
       const locationName = validateEventParams(params)
-      console.log(audioInput)
 
       delete params.drawing
       delete params.categoryIds

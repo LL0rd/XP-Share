@@ -309,13 +309,13 @@ export default {
         if (newMsgIds.length) {
           const roomIndex = this.rooms.findIndex((r) => r.id === room.id)
           const changedRoom = { ...this.rooms[roomIndex] }
-          changedRoom.unreadCount = changedRoom.unreadCount - newMsgIds.length
+          changedRoom.unreadCount = /* changedRoom.unreadCount - newMsgIds.length */ 0
           this.rooms[roomIndex] = changedRoom
           this.$apollo
             .mutate({
               mutation: markMessagesAsSeen(),
               variables: {
-                messageIds: newMsgIds,
+                roomId: room.id,
               },
             })
             .then(() => {

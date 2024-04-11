@@ -1779,7 +1779,7 @@ const xpTypeOptions = [
         userId: (await jennyRostock.toJson()).id,
       },
     })
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 1; i++) {
       authenticatedUser = await huey.toJson()
       await mutate({
         mutation: createMessageMutation(),

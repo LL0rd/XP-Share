@@ -604,7 +604,6 @@ export default {
           files[index].alt = file[0].name
         })
       }
-      console.log(((!this.formData.audio || this.audioUpload) ? audio : 'test' ))
 
       this.loading = true
 
@@ -642,7 +641,6 @@ export default {
           })
         })
         .catch((err) => {
-          console.log(err, err.message)
           this.$toast.error(err.message)
           this.loading = false
         })
