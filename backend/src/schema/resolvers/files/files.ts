@@ -29,7 +29,6 @@ export async function deleteFile (file) {
   const deleteCallback = S3_CONFIGURED ? s3Delete : localFileDelete
   const { url } = file
   deleteCallback(url)
-  console.log(url)
   return url
 }
 

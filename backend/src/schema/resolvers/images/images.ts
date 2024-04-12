@@ -172,7 +172,6 @@ const localFileDelete = async (url) => {
 }
 
 const s3Delete = async (url) => {
-  console.log(url)
   let { pathname } = new URL(url, 'http://example.org') // dummy domain to avoid invalid URL error
   pathname = pathname.substring(1) // remove first character '/'
   const params = {

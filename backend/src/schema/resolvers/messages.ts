@@ -133,18 +133,20 @@ export default {
       }
     },
     MarkMessagesAsSeen: async (_parent, params, context, _resolveInfo) => {
-      const { messageIds } = params
+      const { roomId } = params
+      console.log(roomId)
       const currentUserId = context.user.id
       const session = context.driver.session()
       const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const setSeenCypher = `
+          MATCH (m:Message)-[:INSIDE]->(room:Room)
           MATCH (m:Message)<-[:CREATED]-(user:User)
-          WHERE m.id IN $messageIds AND NOT user.id = $currentUserId
+          WHERE room.id = $roomId AND NOT user.id = $currentUserId
           SET m.seen = true
-          RETURN m { .* }
+          RETURN m { .* }, room
         `
         const setSeenTxResponse = await transaction.run(setSeenCypher, {
-          messageIds,
+          roomId,
           currentUserId,
         })
         const messages = await setSeenTxResponse.records.map((record) => record.get('m'))

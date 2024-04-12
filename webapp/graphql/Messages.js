@@ -80,8 +80,8 @@ export const chatMessageAdded = () => {
 
 export const markMessagesAsSeen = () => {
   return gql`
-    mutation ($messageIds: [String!]) {
-      MarkMessagesAsSeen(messageIds: $messageIds)
+    mutation ($roomId: String!) {
+      MarkMessagesAsSeen(roomId: $roomId)
     }
   `
 }
