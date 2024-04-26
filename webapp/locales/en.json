@@ -1144,5 +1144,10 @@
     "browse": "Browse For Audio",
     "startRecord": "Record Audio",
     "stopRecord": "Stop Recording"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "toComment": "to add a comment to this post."
   }
 }

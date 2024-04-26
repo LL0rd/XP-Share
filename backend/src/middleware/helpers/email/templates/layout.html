@@ -19,7 +19,7 @@
   <![endif]-->
 
   <!--[if !mso]><!-->
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <!-- <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'> -->
   <!--<![endif]-->
 
   <!-- CSS RESETS -->
@@ -112,6 +112,47 @@
         min-width: 414px !important;
       }
     }
+
+    /* Webfont: Lato-Bold */
+    @font-face {
+      font-family: 'Lato';
+      src: url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-Bold.woff2') format('woff2'),
+          url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-Bold.woff') format('woff');
+      font-style: normal;
+      font-weight: 600;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Webfont: Lato-BoldItalic */
+    @font-face {
+      font-family: 'Lato';
+      src: url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-BoldItalic.woff2') format('woff2'),
+          url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-BoldItalic.woff') format('woff');
+      font-style: italic;
+      font-weight: 600;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Webfont: Lato-Italic */
+    @font-face {
+      font-family: 'Lato';
+      src: url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-Italic.woff2') format('woff2'),
+          url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-Italic.woff') format('woff');
+      font-style: italic;
+      font-weight: normal;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Webfont: Lato-Regular */
+    @font-face {
+      font-family: 'Lato';
+      src: url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-Regular.woff2') format('woff2'),
+          url('{{{ ORGANIZATION_URL }}}/fonts/lato/Lato-Regular.woff') format('woff');
+      font-style: normal;
+      font-weight: normal;
+      text-rendering: optimizeLegibility;
+    }
+
   </style>
 
   <!--[if gte mso 9]>

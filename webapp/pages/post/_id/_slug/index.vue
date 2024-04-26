@@ -42,6 +42,7 @@
               </user-teaser>
               <client-only>
                 <content-menu
+                  v-if="isAuthenticated"
                   placement="bottom-end"
                   resource-type="contribution"
                   :resource="post"
@@ -75,13 +76,13 @@
             <ds-space margin-bottom="small" />
             <!-- content -->
             <content-viewer class="content hyphenate-text" :content="post.content" />
-            <div v-if="post && post.audio">
+            <div v-if="post && post.audio && isAuthenticated">
               <audio :src="post.audio.url" controls />
             </div>
-            <div v-if="post && post.drawing" class="post-drawing">
+            <div v-if="post && post.drawing && isAuthenticated" class="post-drawing">
               <img :src="post.drawing.url" class="post-drawing__image"/>
             </div>
-            <div class="files-uploader">
+            <div v-if="post && post.files && post.files.length && isAuthenticated" class="files-uploader">
               <div class="files-uploader__files">
                 <a target="_blank" :href="file.url" v-for="(file, index) in post.files">
                   <base-button class="files-uploader__files__item">
@@ -121,7 +122,7 @@
                 >
                   <hc-shout-button
                     v-if="post.author"
-                    :disabled="isAuthor"
+                    :disabled="isAuthor || !isAuthenticated "
                     :count="post.shoutedCount"
                     :is-shouted="post.shoutedByCurrentUser"
                     :post-id="post.id"
@@ -132,13 +133,14 @@
             <!-- Comments -->
             <ds-section>
               <comment-list
+                v-if="isAuthenticated"
                 :post="post"
                 @toggleNewCommentForm="toggleNewCommentForm"
                 @reply="reply"
               />
               <ds-space margin-bottom="large" />
               <comment-form
-                v-if="showNewCommentForm && !isBlocked && canCommentPost"
+                v-if="showNewCommentForm && !isBlocked && canCommentPost && isAuthenticated"
                 ref="commentForm"
                 :post="post"
                 @createComment="createComment"
@@ -150,6 +152,9 @@
                 <page-params-link :pageParams="links.FAQ">
                   {{ $t('site.faq') }}
                 </page-params-link>
+              </ds-placeholder>
+              <ds-placeholder v-if="!isAuthenticated">
+                  <nuxt-link to="/login">{{ $t('auth.login') }}</nuxt-link> / <nuxt-link to="/registration">{{ $t('auth.register') }}</nuxt-link> {{ $t('auth.toComment') }}
               </ds-placeholder>
             </ds-section>
           </base-card>
@@ -184,9 +189,11 @@ import { groupQuery } from '~/graphql/groups'
 import PostMutations from '~/graphql/PostMutations'
 import links from '~/constants/links.js'
 import SortCategories from '~/mixins/sortCategoriesMixin.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'PostSlug',
+  ssr: true,
   transition: {
     name: 'slide-up',
     mode: 'out-in',
@@ -206,8 +213,50 @@ export default {
   },
   mixins: [SortCategories],
   head() {
+    let dynamicUrl = '';
+    if (process.server && this.$nuxt.context.req) {
+      dynamicUrl = 'https://' + this.$nuxt.context.req.headers.host + this.$route.path;
+    } else if (process.client) {
+      dynamicUrl = window.location.href;
+    }
     return {
       title: this.title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          property: 'og:title',
+          content: this.title
+        },
+        {
+          hid: 'og:url',
+          name: 'og:url',
+          property: 'og:url',
+          content: dynamicUrl
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          property: 'og:description',
+          content: this.post && this.post.content.split(/(?<=[.?!])\s+/).slice(0, 3).join(' ').replace(/<\/?(br|p|h[1-6]|a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b[^>]*>?/gi, '')
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.post && this.post.content.split(/(?<=[.?!])\s+/).slice(0, 3).join(' ').replace(/<\/?(br|p|h[1-6]|a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b[^>]*>?/gi, '')
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          property: 'og:image',
+          content: this.post && this.post.image && this.$options.filters.proxyApiUrl(this.post.image)
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.post && this.post.content.split(/(?<=[.?!])\s+/).slice(0, 3).join(' ').replace(/<\/?(br|p|h[1-6]|a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b[^>]*>?/gi, '')
+        },
+      ]
     }
   },
   data() {
@@ -232,6 +281,9 @@ export default {
     }, 50)
   },
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
     routes() {
       const { slug, id } = this.$route.params
       return [
