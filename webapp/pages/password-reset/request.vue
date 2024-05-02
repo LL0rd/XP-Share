@@ -14,8 +14,12 @@ export default {
     Request,
   },
   methods: {
-    handlePasswordResetRequested({ email }) {
-      this.$router.push({ path: 'enter-nonce', query: { email } })
+    handlePasswordResetRequested({ email, error }) {
+      if (error === 'Email not found') {
+        console.log(error)
+      } else {
+        this.$router.push({ path: 'enter-nonce', query: { email } })
+      }
     },
   },
 }

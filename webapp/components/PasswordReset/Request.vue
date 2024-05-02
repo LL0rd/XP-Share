@@ -39,6 +39,7 @@
       </ds-flex>
     </transition>
     <ds-text v-html="submitMessage" align="left" />
+    <slot></slot>
   </div>
 </template>
 
@@ -65,6 +66,7 @@ export default {
       },
       disabled: true,
       submitted: false,
+      userNotFound: false,
     }
   },
   computed: {
@@ -73,7 +75,7 @@ export default {
     },
     submitMessage() {
       const { email } = this
-      return this.$t('components.password-reset.request.form.submitted', { email })
+      return this.userNotFound ? this.$t('components.password-reset.request.form.not-found') : this.$t('components.password-reset.request.form.submitted', { email })
     },
   },
   methods: {
@@ -91,12 +93,15 @@ export default {
       `
       try {
         const { email } = this
-        await this.$apollo.mutate({ mutation, variables: { email } })
+        const { data } = await this.$apollo.mutate({ mutation, variables: { email } })
         this.submitted = true
 
-        setTimeout(() => {
+        if(!data.requestPasswordReset) this.userNotFound = true;
+        else {
+          setTimeout(() => {
           this.$emit('handleSubmitted', { email })
         }, 3000)
+        }
       } catch (err) {
         this.$toast.error(err.message)
       }

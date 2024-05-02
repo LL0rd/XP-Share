@@ -74,6 +74,11 @@
               />
             </ds-space>
             <ds-space margin-bottom="small" />
+            <div v-if="fetchingSimilarPosts" class="loader">
+              <loading-spinner />
+              <p>Searching for similar posts...</p>
+            </div>
+            <ds-space margin-bottom="small" />
             <!-- content -->
             <content-viewer class="content hyphenate-text" :content="post.content" />
             <div v-if="post && post.audio && isAuthenticated">
@@ -130,6 +135,21 @@
                 </ds-flex-item>
               </ds-flex>
             </ds-space>
+            <ds-space v-if="!fetchingSimilarPosts" margin-top="small">
+              <h2 class="similar-posts__title">{{ $t('relatedPosts') }}</h2>
+              <div v-if="similarPosts.length" class="similar-posts">
+                <nuxt-link :to="`/post/${post.id}`" v-for="(post, index) in similarPosts" :key="`post-${index}`" class="similar-posts__card">
+                  <h4 class="similar-posts__card__title">{{ post | translatedTitle(currentLocale) }}</h4>
+                  <p class="similar-posts__card__summary">{{ post | translatedSummary(currentLocale) }}</p>
+                  <div v-if="post.hashtags && post.hashtags.length" class="similar-posts__card__hashtags">
+                    <div v-for="(hash, index) in post.hashtags" :key="`hash-${index}`" class="similar-posts__card__hashtags-item">
+                      #{{ hash }}
+                    </div>
+                  </div>
+                </nuxt-link>
+              </div>
+              <p v-else>{{ $t('noSimilarPostings') }}</p>
+            </ds-space>
             <!-- Comments -->
             <ds-section>
               <comment-list
@@ -168,6 +188,7 @@
 </template>
 
 <script>
+import LoadingSpinner from '~/components/_new/generic/LoadingSpinner/LoadingSpinner'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
@@ -210,6 +231,7 @@ export default {
     LocationTeaser,
     PageParamsLink,
     UserTeaser,
+    LoadingSpinner
   },
   mixins: [SortCategories],
   head() {
@@ -271,9 +293,15 @@ export default {
       postAuthor: null,
       categoriesActive: this.$env.CATEGORIES_ACTIVE,
       group: null,
+      fetchingSimilarPosts: false,
+      currentLocale: this.$i18n.locale(),
+      similarPosts: []
     }
   },
-  mounted() {
+  async created() {
+    await this.fetchSimilarPosts(this.$route.params.id);
+  },
+  async mounted() {
     setTimeout(() => {
       // NOTE: quick fix for jumping flexbox implementation
       // will be fixed in a future update of the styleguide
@@ -355,7 +383,43 @@ export default {
       )
     },
   },
+  filters: {
+    translatedTitle: (post, currentLocale) => {
+      return post[`${currentLocale}_title`];
+    },
+    translatedSummary: (post, currentLocale) => {
+      return post[`${currentLocale}_summary`];
+    },
+  },
   methods: {
+    async fetchSimilarPosts(id) {
+      this.fetchingSimilarPosts = true;
+
+      const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(new Error('Timeout exceeded'));
+        }, 30000); // maximum timeout of 30 seconds. This accounts for potential delays due to the API's internal processing involving OpenAI and vector database calls.
+      });
+
+      try {
+        console.log(`${this.$env.API_URL}/chat-gpt-ai/getSimilarDreams/${id}`)
+        const response = await Promise.race([
+          fetch(`${this.$env.API_URL}/chat-gpt-ai/getSimilarDreams/${id}`),
+          timeoutPromise
+        ]);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        this.similarPosts = await response.json()
+        this.similarPosts = this.similarPosts.sort((a, b) => b.score - a.score); // Sort according to score
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.fetchingSimilarPosts = false;
+      }
+    },
     reply(message) {
       this.$refs.commentForm && this.$refs.commentForm.reply(message)
     },
@@ -558,5 +622,60 @@ export default {
   &__image {
     width: 100%;
   }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+
+  & p {
+    margin-left: 12px;
+  }
+}
+
+.similar-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-gap: 10px;
+  margin-bottom: 60px;
+  margin-top: 16px;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__card {
+    border: 1px solid #efeef1;
+    border-radius: 6px;
+    padding: 20px;
+    color: #4b4554 !important;
+
+    &:hover {
+      cursor: pointer;
+      background: #faf9fa;
+    }
+
+    &__title {
+      margin-bottom: 16px;
+    }
+
+    &__hashtags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 16px;
+
+      &-item {
+        padding: 2px 4px;
+        margin-right: 8px;
+        font-size: 12px;
+        margin-top: 8px;
+        border-radius: 6px;
+        border: 1px solid #526f98;
+        background: #fff;
+      }
+    }
+  }
+
 }
 </style>
