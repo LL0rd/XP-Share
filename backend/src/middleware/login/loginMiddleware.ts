@@ -24,9 +24,14 @@ const sendSignupMail = async (resolve, root, args, context, resolveInfo) => {
 
 const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) => {
   const { email } = args
-  const { email: userFound, nonce, name } = await resolve(root, args, context, resolveInfo)
-  const template = userFound ? resetPasswordTemplate : wrongAccountTemplate
-  await sendMail(template({ email, variables: { nonce, name } }))
+  const { email: userFound, nonce, name, error } = await resolve(root, args, context, resolveInfo)
+
+  if (error && !userFound) return false;
+  else {
+    const template = userFound ? resetPasswordTemplate : wrongAccountTemplate
+    await sendMail(template({ email, variables: { nonce, name } }))
+  }
+
   return true
 }
 

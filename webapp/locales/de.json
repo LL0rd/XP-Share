@@ -162,7 +162,8 @@
         "form": {
           "description": "Eine E-Mail zum Zurücksetzen des Passworts wird an die angegebene Adresse geschickt.",
           "submit": "E-Mail anfordern",
-          "submitted": "Eine E-Mail mit weiteren Hinweisen wurde verschickt an <b>{email}</b>"
+          "submitted": "Eine E-Mail mit weiteren Hinweisen wurde verschickt an <b>{email}</b>",
+          "not-found": "Wenn Ihre E-Mail-Adresse bei uns registriert ist, erhalten Sie in Kürze eine E-Mail zum Zurücksetzen Ihres Passworts."
         },
         "title": "Passwort zurücksetzen"
       }
@@ -1127,5 +1128,7 @@
     "newTermsAndConditions": "Neue Nutzungsbedingungen",
     "termsAndConditionsNewConfirm": "Ich habe die neuen Nutzungsbedingungen durchgelesen und stimme zu.",
     "termsAndConditionsNewConfirmText": "Bitte lies Dir die neuen Nutzungsbedingungen jetzt durch!"
-  }
+  },
+  "relatedPosts": "Verwandte Beiträge",
+  "noSimilarPostings": "Keine ähnlichen Beiträge gefunden."
 }

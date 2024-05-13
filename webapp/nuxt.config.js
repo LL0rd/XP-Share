@@ -46,6 +46,7 @@ export default {
       'data-privacy',
       'faq',
       'donate',
+      'post-id-slug'
     ],
     // pages to keep alive
     keepAlivePages: ['index'],

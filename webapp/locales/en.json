@@ -162,7 +162,8 @@
         "form": {
           "description": "A password reset e-mail will be sent to the given e-mail address.",
           "submit": "Request e-mail",
-          "submitted": "An e-mail with further instructions has been sent to <b>{email}</b>"
+          "submitted": "An e-mail with further instructions has been sent to <b>{email}</b>",
+          "not-found": "If your email address is registered with us, you will receive a password reset email shortly."
         },
         "title": "Reset your password"
       }
@@ -1144,5 +1145,12 @@
     "browse": "Browse For Audio",
     "startRecord": "Record Audio",
     "stopRecord": "Stop Recording"
-  }
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "toComment": "to add a comment to this post."
+  },
+  "relatedPosts": "Related Posts",
+  "noSimilarPostings": "No similar postings found."
 }

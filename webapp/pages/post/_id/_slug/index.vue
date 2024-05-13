@@ -42,6 +42,7 @@
               </user-teaser>
               <client-only>
                 <content-menu
+                  v-if="isAuthenticated"
                   placement="bottom-end"
                   resource-type="contribution"
                   :resource="post"
@@ -73,15 +74,20 @@
               />
             </ds-space>
             <ds-space margin-bottom="small" />
+            <div v-if="fetchingSimilarPosts" class="loader">
+              <loading-spinner />
+              <p>Searching for similar posts...</p>
+            </div>
+            <ds-space margin-bottom="small" />
             <!-- content -->
             <content-viewer class="content hyphenate-text" :content="post.content" />
-            <div v-if="post && post.audio">
+            <div v-if="post && post.audio && isAuthenticated">
               <audio :src="post.audio.url" controls />
             </div>
-            <div v-if="post && post.drawing" class="post-drawing">
+            <div v-if="post && post.drawing && isAuthenticated" class="post-drawing">
               <img :src="post.drawing.url" class="post-drawing__image"/>
             </div>
-            <div class="files-uploader">
+            <div v-if="post && post.files && post.files.length && isAuthenticated" class="files-uploader">
               <div class="files-uploader__files">
                 <a target="_blank" :href="file.url" v-for="(file, index) in post.files">
                   <base-button class="files-uploader__files__item">
@@ -121,7 +127,7 @@
                 >
                   <hc-shout-button
                     v-if="post.author"
-                    :disabled="isAuthor"
+                    :disabled="isAuthor || !isAuthenticated "
                     :count="post.shoutedCount"
                     :is-shouted="post.shoutedByCurrentUser"
                     :post-id="post.id"
@@ -129,16 +135,32 @@
                 </ds-flex-item>
               </ds-flex>
             </ds-space>
+            <ds-space v-if="!fetchingSimilarPosts" margin-top="small">
+              <h2 class="similar-posts__title">{{ $t('relatedPosts') }}</h2>
+              <div v-if="similarPosts.length" class="similar-posts">
+                <nuxt-link :to="`/post/${post.id}`" v-for="(post, index) in similarPosts" :key="`post-${index}`" class="similar-posts__card">
+                  <h4 class="similar-posts__card__title">{{ post | translatedTitle(currentLocale) }}</h4>
+                  <p class="similar-posts__card__summary">{{ post | translatedSummary(currentLocale) }}</p>
+                  <div v-if="post.hashtags && post.hashtags.length" class="similar-posts__card__hashtags">
+                    <div v-for="(hash, index) in post.hashtags" :key="`hash-${index}`" class="similar-posts__card__hashtags-item">
+                      #{{ hash }}
+                    </div>
+                  </div>
+                </nuxt-link>
+              </div>
+              <p v-else>{{ $t('noSimilarPostings') }}</p>
+            </ds-space>
             <!-- Comments -->
             <ds-section>
               <comment-list
+                v-if="isAuthenticated"
                 :post="post"
                 @toggleNewCommentForm="toggleNewCommentForm"
                 @reply="reply"
               />
               <ds-space margin-bottom="large" />
               <comment-form
-                v-if="showNewCommentForm && !isBlocked && canCommentPost"
+                v-if="showNewCommentForm && !isBlocked && canCommentPost && isAuthenticated"
                 ref="commentForm"
                 :post="post"
                 @createComment="createComment"
@@ -150,6 +172,9 @@
                 <page-params-link :pageParams="links.FAQ">
                   {{ $t('site.faq') }}
                 </page-params-link>
+              </ds-placeholder>
+              <ds-placeholder v-if="!isAuthenticated">
+                  <nuxt-link to="/login">{{ $t('auth.login') }}</nuxt-link> / <nuxt-link to="/registration">{{ $t('auth.register') }}</nuxt-link> {{ $t('auth.toComment') }}
               </ds-placeholder>
             </ds-section>
           </base-card>
@@ -163,6 +188,7 @@
 </template>
 
 <script>
+import LoadingSpinner from '~/components/_new/generic/LoadingSpinner/LoadingSpinner'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
@@ -184,9 +210,11 @@ import { groupQuery } from '~/graphql/groups'
 import PostMutations from '~/graphql/PostMutations'
 import links from '~/constants/links.js'
 import SortCategories from '~/mixins/sortCategoriesMixin.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'PostSlug',
+  ssr: true,
   transition: {
     name: 'slide-up',
     mode: 'out-in',
@@ -203,11 +231,54 @@ export default {
     LocationTeaser,
     PageParamsLink,
     UserTeaser,
+    LoadingSpinner
   },
   mixins: [SortCategories],
   head() {
+    let dynamicUrl = '';
+    if (process.server && this.$nuxt.context.req) {
+      dynamicUrl = 'https://' + this.$nuxt.context.req.headers.host + this.$route.path;
+    } else if (process.client) {
+      dynamicUrl = window.location.href;
+    }
     return {
       title: this.title,
+      meta: [
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          property: 'og:title',
+          content: this.title
+        },
+        {
+          hid: 'og:url',
+          name: 'og:url',
+          property: 'og:url',
+          content: dynamicUrl
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          property: 'og:description',
+          content: this.post && this.post.content.split(/(?<=[.?!])\s+/).slice(0, 3).join(' ').replace(/<\/?(br|p|h[1-6]|a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b[^>]*>?/gi, '')
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.post && this.post.content.split(/(?<=[.?!])\s+/).slice(0, 3).join(' ').replace(/<\/?(br|p|h[1-6]|a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b[^>]*>?/gi, '')
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          property: 'og:image',
+          content: this.post && this.post.image && this.$options.filters.proxyApiUrl(this.post.image)
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.post && this.post.content.split(/(?<=[.?!])\s+/).slice(0, 3).join(' ').replace(/<\/?(br|p|h[1-6]|a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|param|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b[^>]*>?/gi, '')
+        },
+      ]
     }
   },
   data() {
@@ -222,9 +293,15 @@ export default {
       postAuthor: null,
       categoriesActive: this.$env.CATEGORIES_ACTIVE,
       group: null,
+      fetchingSimilarPosts: false,
+      currentLocale: this.$i18n.locale(),
+      similarPosts: []
     }
   },
-  mounted() {
+  async created() {
+    await this.fetchSimilarPosts(this.$route.params.id);
+  },
+  async mounted() {
     setTimeout(() => {
       // NOTE: quick fix for jumping flexbox implementation
       // will be fixed in a future update of the styleguide
@@ -232,6 +309,9 @@ export default {
     }, 50)
   },
   computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
     routes() {
       const { slug, id } = this.$route.params
       return [
@@ -303,7 +383,43 @@ export default {
       )
     },
   },
+  filters: {
+    translatedTitle: (post, currentLocale) => {
+      return post[`${currentLocale}_title`];
+    },
+    translatedSummary: (post, currentLocale) => {
+      return post[`${currentLocale}_summary`];
+    },
+  },
   methods: {
+    async fetchSimilarPosts(id) {
+      this.fetchingSimilarPosts = true;
+
+      const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(new Error('Timeout exceeded'));
+        }, 30000); // maximum timeout of 30 seconds. This accounts for potential delays due to the API's internal processing involving OpenAI and vector database calls.
+      });
+
+      try {
+        console.log(`${this.$env.API_URL}/chat-gpt-ai/getSimilarDreams/${id}`)
+        const response = await Promise.race([
+          fetch(`${this.$env.API_URL}/chat-gpt-ai/getSimilarDreams/${id}`),
+          timeoutPromise
+        ]);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        this.similarPosts = await response.json()
+        this.similarPosts = this.similarPosts.sort((a, b) => b.score - a.score); // Sort according to score
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.fetchingSimilarPosts = false;
+      }
+    },
     reply(message) {
       this.$refs.commentForm && this.$refs.commentForm.reply(message)
     },
@@ -506,5 +622,60 @@ export default {
   &__image {
     width: 100%;
   }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+
+  & p {
+    margin-left: 12px;
+  }
+}
+
+.similar-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-gap: 10px;
+  margin-bottom: 60px;
+  margin-top: 16px;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__card {
+    border: 1px solid #efeef1;
+    border-radius: 6px;
+    padding: 20px;
+    color: #4b4554 !important;
+
+    &:hover {
+      cursor: pointer;
+      background: #faf9fa;
+    }
+
+    &__title {
+      margin-bottom: 16px;
+    }
+
+    &__hashtags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 16px;
+
+      &-item {
+        padding: 2px 4px;
+        margin-right: 8px;
+        font-size: 12px;
+        margin-top: 8px;
+        border-radius: 6px;
+        border: 1px solid #526f98;
+        background: #fff;
+      }
+    }
+  }
+
 }
 </style>
