@@ -25,7 +25,7 @@ const s3 = new S3Client({
     accessKeyId,
     secretAccessKey,
   },
-  forcePathStyle: true
+  // forcePathStyle: true
 })
 
 export async function deleteDrawing(resource, relationshipType, opts: any = {}) {
