@@ -38,7 +38,7 @@ COPY --from=build ${DOCKER_WORKDIR}/build ./build
 COPY --from=build ${DOCKER_WORKDIR}/node_modules ./node_modules
 # TODO - externalize the uploads so we can copy the whole folder
 COPY --from=build ${DOCKER_WORKDIR}/public/img/ ./public/img/
-COPY --from=build ${DOCKER_WORKDIR}/public/providers.json ./build/public/providers.json
+COPY --from=build ${DOCKER_WORKDIR}/public/providers.json ./public/providers.json
 # Copy package.json for script definitions (lock file should not be needed)
 COPY --from=build ${DOCKER_WORKDIR}/package.json ./package.json
 
