@@ -1,8 +1,10 @@
 import { getDriver } from '../../db/neo4j'
 import { existsSync, createReadStream } from 'fs'
 import path from 'path'
-import { HttpHandlerOptions, streamCollector, Upload } from '@aws-sdk/lib-storage'
-import { ObjectCannedACL, S3, S3ClientConfig } from '@aws-sdk/client-s3'
+import { Upload } from '@aws-sdk/lib-storage'
+import { ObjectCannedACL, DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3'
+// import { HttpHandlerOptions, streamCollector, Upload } from '@aws-sdk/lib-storage'
+// import { ObjectCannedACL, S3, S3ClientConfig } from '@aws-sdk/client-s3'
 import mime from 'mime-types'
 import s3Configs from '../../config'
 import { Agent } from 'https'
@@ -25,6 +27,8 @@ export async function up(next) {
     AWS_REGION: region,
     AWS_BUCKET: Bucket,
     S3_CONFIGURED,
+    AWS_ACCESS_KEY_ID: accessKeyId,
+    AWS_SECRET_ACCESS_KEY: secretAccessKey
   } = s3Configs
 
   if (!S3_CONFIGURED) {
@@ -33,23 +37,28 @@ export async function up(next) {
     return
   }
 
-  const s3 = new S3({
+  const s3 = new S3Client({
     region,
     endpoint,
-    clientDefault: {
-      middleware: (stack) => {
-        stack.add(
-          (next, context) => (args) => {
-            const httpOptions: HttpHandlerOptions = {
-                agent
-            };
-            args.request.handlerOptions = httpOptions;
-            return next(args);
-          },
-          { step: 'initialize', name: 'customHttpMiddleware' }
-        )
-      }
-    }
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+    },
+    forcePathStyle: true
+    // clientDefault: {
+    //   middleware: (stack) => {
+    //     stack.add(
+    //       (next, context) => (args) => {
+    //         const httpOptions: HttpHandlerOptions = {
+    //             agent
+    //         };
+    //         args.request.handlerOptions = httpOptions;
+    //         return next(args);
+    //       },
+    //       { step: 'initialize', name: 'customHttpMiddleware' }
+    //     )
+    //   }
+    // }
   })
   try {
     // Implement your migration here.
