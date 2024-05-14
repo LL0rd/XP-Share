@@ -8,30 +8,6 @@ version: "3.4"
 services:
 
   ########################################################
-  # LOCALSTACK ###########################################
-  ########################################################
-  localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
-    image: localstack/localstack
-    networks:
-      - external-net
-    ports:
-      - "4566:4566"            # LocalStack Gateway
-      - "4510-4559:4510-4559"  # external services port range
-    environment:
-      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - DEBUG=${DEBUG:-0}
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_DEFAULT_REGION=eu-central-1
-      - SERVICES=s3
-      - LOCALSTACK_HOST=localstack:4566
-    volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - ./localstack.sh:/etc/localstack/init/ready.d/localstack.sh
-
-  ########################################################
   # WEBAPP ###############################################
   ########################################################
   webapp:
@@ -76,9 +52,6 @@ services:
     networks:
       - external-net
       - internal-net
-    depends_on:
-      - neo4j
-      - localstack
     ports:
       - 4000:4000
     volumes:
@@ -93,7 +66,6 @@ services:
       - NODE_ENV="production"
       # Application only envs
       - DEBUG=false
-      - NEO4J_URI=bolt://neo4j:7687
       - GRAPHQL_URI=http://backend:4000
       - CLIENT_URI=http://webapp:3000
     env_file:
@@ -115,37 +87,6 @@ services:
     ports:
       - 3001:80
 
-  ########################################################
-  # NEO4J ################################################
-  ########################################################
-  neo4j:
-    # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
-    image: ocelotsocialnetwork/neo4j-community:local-production
-    container_name: neo4j
-    build:
-      context: ./neo4j
-      # community edition 👆🏼, because we have no enterprise licence 👇🏼 at the moment
-      target: community
-    networks:
-      - internal-net
-    ports:
-      - 7687:7687
-    volumes:
-      - neo4j_data:/data
-    environment:
-      # settings reference: https://neo4j.com/docs/operations-manual/4.4/docker/ref-settings/
-      # TODO: This sounds scary for a production environment
-      - NEO4J_AUTH=none
-      - NEO4J_dbms_security_procedures_unrestricted=algo.*,apoc.*
-      - NEO4J_dbms_allow__format__migration=true
-      - NEO4J_dbms_allow__upgrade=true
-      # Uncomment following line for Neo4j Enterprise version instead of Community version
-      # TODO: clarify if that is the only thing needed to unlock the Enterprise version
-      # - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
-      # TODO: Remove the playground from production
-    # bring the database in offline mode to export or load dumps
-    # command: ["tail", "-f", "/dev/null"]
-
 networks:
   external-net:
   internal-net:
@@ -153,4 +94,3 @@ networks:
 
 volumes:
   backend_uploads:
-  neo4j_data:

@@ -49,15 +49,15 @@ services:
   ########################################################
   # NEO4J ################################################
   ########################################################
-  neo4j:
-    # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
-    image: ocelotsocialnetwork/neo4j-community:local-development
-    ports:
-      # Also expose the neo4j query browser
-      - 7474:7474
-    networks:
-      # So we can access the neo4j query browser from our host machine
-      - external-net
+  # neo4j:
+  #   # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
+  #   image: ocelotsocialnetwork/neo4j-community:local-development
+  #   ports:
+  #     # Also expose the neo4j query browser
+  #     - 7474:7474
+  #   networks:
+  #     # So we can access the neo4j query browser from our host machine
+  #     - external-net
 
   ########################################################
   # MAILSERVER TO FAKE SMTP ##############################
