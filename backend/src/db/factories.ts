@@ -105,19 +105,19 @@ Factory.define('user')
   .extend('basicUser')
   .option('about', faker.lorem.paragraph)
   .option('email', faker.internet.exampleEmail)
-  .option('avatar', () =>
-    Factory.build('image', {
-      url: faker.internet.avatar(),
-    }),
-  )
+  // .option('avatar', () =>
+  //   Factory.build('image', {
+  //     url: faker.internet.avatar(),
+  //   }),
+  // )
   .after(async (buildObject, options) => {
-    const [user, email, avatar] = await Promise.all([
+    const [user, email, /* avatar */] = await Promise.all([
       neode.create('User', buildObject),
       neode.create('EmailAddress', { email: options.email }),
-      options.avatar,
+      // options.avatar,
     ])
     await Promise.all([user.relateTo(email, 'primaryEmail'), email.relateTo(user, 'belongsTo')])
-    if (avatar) await user.relateTo(avatar, 'avatar')
+    // if (avatar) await user.relateTo(avatar, 'avatar')
     return user
   })
 
