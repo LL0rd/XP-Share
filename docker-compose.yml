@@ -67,7 +67,7 @@ services:
       # Application only envs
       - DEBUG=false
       - GRAPHQL_URI=http://backend:4000
-      - CLIENT_URI=http://webapp:3000
+      # - CLIENT_URI=http://webapp:3000
     env_file:
       - ./backend/.env
 
