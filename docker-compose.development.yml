@@ -83,6 +83,10 @@ services:
       - 4000:4000
     volumes:
       - backend_uploads:/app/public/uploads
+      # Therefore it is possible to have a different node version on the host machine
+      - backend_node_modules:/app/node_modules
+      # bind the local folder to the docker to allow live reload
+      - ./backend:/app
     environment:
       # Envs used in Dockerfile
       # - DOCKER_WORKDIR="/app"
@@ -154,3 +158,4 @@ networks:
 volumes:
   backend_uploads:
   neo4j_data:
+  backend_node_modules:
