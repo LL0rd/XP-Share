@@ -117,7 +117,7 @@ import LocationTeaser from '~/components/LocationTeaser/LocationTeaser'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import { mapGetters } from 'vuex'
 import PostMutations from '~/graphql/PostMutations'
-import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
+import { postMenuModalsData, deletePostMutation, softDeletePostMutation } from '~/components/utils/PostHelpers'
 
 export default {
   name: 'PostTeaser',
@@ -191,6 +191,7 @@ export default {
         // "this.post" may not always be defined at the beginning …
         this.post ? this.$filters.truncate(this.post.title, 30) : '',
         this.deletePostCallback,
+        this.softDeletePostCallback
       )
     },
     isPinned() {
@@ -210,6 +211,17 @@ export default {
         } = await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
         this.$emit('removePostFromList', DeletePost)
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async softDeletePostCallback() {
+      try {
+        const {
+          data: { SoftDeletePost },
+        } = await this.$apollo.mutate(softDeletePostMutation(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.admin.success'))
+        this.$emit('removePostFromList', SoftDeletePost)
       } catch (err) {
         this.$toast.error(err.message)
       }

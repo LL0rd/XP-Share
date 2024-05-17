@@ -203,6 +203,7 @@ import PageParamsLink from '~/components/_new/features/PageParamsLink/PageParams
 import {
   postMenuModalsData,
   deletePostMutation,
+  softDeletePostMutation,
   sortTagsAlphabetically,
 } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
@@ -349,6 +350,7 @@ export default {
         // "this.post" may not always be defined at the beginning …
         this.post ? this.$filters.truncate(this.post.title, 30) : '',
         this.deletePostCallback,
+        this.softDeletePostCallback
       )
     },
     isBlocked() {
@@ -427,6 +429,15 @@ export default {
       try {
         await this.$apollo.mutate(deletePostMutation(this.post.id))
         this.$toast.success(this.$t('delete.contribution.success'))
+        this.$router.history.push('/') // Redirect to index (main) page
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async softDeletePostCallback() {
+      try {
+        await this.$apollo.mutate(softDeletePostMutation(this.post.id))
+        this.$toast.success(this.$t('delete.contribution.admin.success'))
         this.$router.history.push('/') // Redirect to index (main) page
       } catch (err) {
         this.$toast.error(err.message)

@@ -168,6 +168,13 @@ export default () => {
         }
       }
     `,
+    SoftDeletePost: gql`
+      mutation ($id: ID!) {
+        SoftDeletePost(id: $id) {
+          id
+        }
+      }
+    `,
     AddPostEmotionsMutation: gql`
       mutation ($to: _PostInput!, $data: _EMOTEDInput!) {
         AddPostEmotions(to: $to, data: $data) {

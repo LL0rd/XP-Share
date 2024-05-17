@@ -148,6 +148,16 @@ export default {
         }
       }
 
+      if (this.isAdmin && this.resourceType === 'contribution') {
+        routes.push({
+          label: this.$t(`post.menu.adminDelete`),
+          callback: () => {
+            this.openModal('confirm', 'adminDelete')
+          },
+          icon: 'trash',
+        })
+      }
+
       if (this.resourceType === 'user') {
         if (this.isOwner) {
           routes.push({

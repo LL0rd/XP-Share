@@ -428,6 +428,29 @@ export default {
         session.close()
       }
     },
+    SoftDeletePost: async (object, args, context, resolveInfo) => {
+      const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
+        const softDeletePostTransactionResponse = await transaction.run(
+          `
+            MATCH (post:Post {id: $postId})
+            SET post.deleted = TRUE
+            WITH post
+            RETURN post {.*}
+          `,
+          { postId: args.id },
+        )
+        const records = softDeletePostTransactionResponse.records;
+        const [post] = records.map(record => record.get('post'));
+        return post
+      })
+      try {
+        const post = await writeTxResultPromise
+        return post
+      } finally {
+        session.close()
+      }
+    },
     AddPostEmotions: async (object, params, context, resolveInfo) => {
       const { to, data } = params
       const { user } = context

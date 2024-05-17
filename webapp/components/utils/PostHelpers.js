@@ -1,6 +1,6 @@
 import PostMutations from '~/graphql/PostMutations.js'
 
-export function postMenuModalsData(truncatedPostName, confirmCallback, cancelCallback = () => {}) {
+export function postMenuModalsData(truncatedPostName, confirmCallback, softDeleteCallback, cancelCallback = () => {}) {
   return {
     delete: {
       titleIdent: 'delete.contribution.title',
@@ -22,12 +22,41 @@ export function postMenuModalsData(truncatedPostName, confirmCallback, cancelCal
         },
       },
     },
+    adminDelete: {
+      titleIdent: 'delete.contribution.admin.title',
+      messageIdent: 'delete.contribution.admin.message',
+      messageParams: {
+        name: truncatedPostName,
+      },
+      buttons: {
+        confirm: {
+          danger: true,
+          icon: 'trash',
+          textIdent: 'delete.adminSubmit',
+          callback: softDeleteCallback,
+        },
+        cancel: {
+          icon: 'close',
+          textIdent: 'delete.cancel',
+          callback: cancelCallback,
+        },
+      },
+    }
   }
 }
 
 export function deletePostMutation(postId) {
   return {
     mutation: PostMutations().DeletePost,
+    variables: {
+      id: postId,
+    },
+  }
+}
+
+export function softDeletePostMutation(postId) {
+  return {
+    mutation: PostMutations().SoftDeletePost,
     variables: {
       id: postId,
     },

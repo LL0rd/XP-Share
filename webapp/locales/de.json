@@ -350,9 +350,16 @@
       "message": "Bist Du sicher, dass Du den Beitrag „<b>{name}</b>“ löschen möchtest?",
       "success": "Beitrag erfolgreich gelöscht!",
       "title": "Lösche Beitrag",
-      "type": "Beitrag"
+      "type": "Beitrag",
+      "admin": {
+        "message": "Möchten Sie den Beitrag „<b>{name}</b>“ wirklich löschen?",
+        "success": "Beitrag erfolgreich softgelöscht!",
+        "title": "Soft Delete Post",
+        "type": "Beitrag"
+      }
     },
-    "submit": "Löschen"
+    "submit": "Löschen",
+    "adminSubmit": "Weiches Löschen"
   },
   "disable": {
     "cancel": "Abbrechen",
@@ -790,6 +797,7 @@
     "event": "Veranstaltung",
     "menu": {
       "delete": "Beitrag löschen",
+      "adminDelete": "Verwaltung Löschen",
       "edit": "Beitrag bearbeiten",
       "pin": "Beitrag anheften",
       "pinnedSuccessfully": "Beitrag erfolgreich angeheftet!",

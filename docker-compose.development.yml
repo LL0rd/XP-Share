@@ -36,11 +36,11 @@ services:
   ########################################################
   webapp:
     # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
-    image: ocelotsocialnetwork/webapp:local-production
+    image: ocelotsocialnetwork/webapp:local-development
     container_name: webapp
     build:
       context: ./webapp
-      target: production
+      target: development
     networks:
       - external-net
     depends_on:
@@ -56,23 +56,30 @@ services:
       - BUILD_DATE
       - BUILD_VERSION
       - BUILD_COMMIT
-      - NODE_ENV="production"
       # Application only envs
       - HOST=0.0.0.0 # This is nuxt specific, alternative value is HOST=webapp
       - GRAPHQL_URI=http://backend:4000
+      - NODE_ENV="development"
+      # - DEBUG=true
+      - NUXT_BUILD=/tmp/nuxt # avoid file permission issues when `rm -rf .nuxt/`
     env_file:
       - ./webapp/.env
-
+    volumes:
+      # This makes sure the docker container has its own node modules.
+      # Therefore it is possible to have a different node version on the host machine
+      - webapp_node_modules:/app/node_modules
+      # bind the local folder to the docker to allow live reload
+      - ./webapp:/app
   ########################################################
   # BACKEND ##############################################
   ########################################################
   backend:
     # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
-    image: ocelotsocialnetwork/backend:local-production
+    image: ocelotsocialnetwork/backend:local-development
     container_name: backend
     build:
       context: ./backend
-      target: production
+      target: development
     networks:
       - external-net
       - internal-net
@@ -108,7 +115,7 @@ services:
   ########################################################
   maintenance:
     # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
-    image: ocelotsocialnetwork/maintenance:local-production
+    image: ocelotsocialnetwork/maintenance:local-development
     container_name: maintenance
     build:
       # TODO: Separate from webapp, this must be independent
@@ -124,7 +131,7 @@ services:
   ########################################################
   neo4j:
     # name the image so that it cannot be found in a DockerHub repository, otherwise it will not be built locally from the 'dockerfile' but pulled from there
-    image: ocelotsocialnetwork/neo4j-community:local-production
+    image: ocelotsocialnetwork/neo4j-community:local-development
     container_name: neo4j
     build:
       context: ./neo4j
@@ -150,12 +157,24 @@ services:
     # bring the database in offline mode to export or load dumps
     # command: ["tail", "-f", "/dev/null"]
 
+  ########################################################
+  # MAILSERVER TO FAKE SMTP ##############################
+  ########################################################
+  mailserver:
+    image: djfarrelly/maildev
+    container_name: mailserver
+    ports:
+      - 1080:80
+    networks:
+      - external-net
+
 networks:
   external-net:
   internal-net:
     internal: true
 
 volumes:
+  webapp_node_modules:
   backend_uploads:
   neo4j_data:
   backend_node_modules:

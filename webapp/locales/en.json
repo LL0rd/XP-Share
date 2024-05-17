@@ -350,7 +350,13 @@
       "message": "Do you really want to delete the post \"<b>{name}</b>\"?",
       "success": "Post successfully deleted!",
       "title": "Delete Post",
-      "type": "Contribution"
+      "type": "Contribution",
+      "admin": {
+        "message": "Do you really want to soft delete the post \"<b>{name}</b>\"?",
+        "success": "Post successfully soft deleted!",
+        "title": "Soft Delete Post",
+        "type": "Contribution"
+      }
     },
     "file": {
       "message": "Do you really want to delete the file \"<b>{name}</b>\"?",
@@ -358,7 +364,8 @@
       "title": "Delete File",
       "type": "File"
     },
-    "submit": "Delete"
+    "submit": "Delete",
+    "adminSubmit": "Soft Delete"
   },
   "disable": {
     "cancel": "Cancel",
@@ -796,6 +803,7 @@
     "event": "Event",
     "menu": {
       "delete": "Delete post",
+      "adminDelete": "Admin Delete",
       "edit": "Edit post",
       "pin": "Pin post",
       "pinnedSuccessfully": "Post pinned successfully!",
