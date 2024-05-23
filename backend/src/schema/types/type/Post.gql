@@ -262,6 +262,7 @@ type Mutation {
     audio: Upload
   ): Post
   DeletePost(id: ID!): Post
+  SoftDeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
   RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
   pinPost(id: ID!): Post

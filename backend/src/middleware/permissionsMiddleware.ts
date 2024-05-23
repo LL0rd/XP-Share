@@ -452,6 +452,7 @@ export default shield(
       CreatePost: and(isAuthenticated, isMemberOfGroup),
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
+      SoftDeletePost: isAdmin,
       fileReport: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
       UpdateSocialMedia: isMySocialMedia,
