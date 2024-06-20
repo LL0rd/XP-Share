@@ -37,7 +37,7 @@ RUN yarn run generate
 # BRANDED ### TODO # TODO # TODO # TODO # TODO # TODO # TODO # TODO # TODO ####
 ##################################################################################
 # FROM $APP_IMAGE_BASE as branded
-FROM nginx:alpine as branded
+FROM nginx:1.25.4-alpine3.18 as branded
 
 COPY --from=build ./app/dist/ /usr/share/nginx/html/
 RUN rm /etc/nginx/conf.d/default.conf
